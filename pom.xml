@@ -12,6 +12,7 @@
         <module>cx-bbs-gateaway</module>
         <module>cx-bbs-model</module>
         <module>cx-bbs-service</module>
+        <module>cx-bbs-utils</module>
     </modules>
     <name>cx-bbs</name>
     <description>cx-bbs</description>
