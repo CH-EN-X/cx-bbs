@@ -18,9 +18,10 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.heima</groupId>
-            <artifactId>heima-leadnews-utils</artifactId>
+            <groupId>com.cx</groupId>
+            <artifactId>cx-bbs-utils</artifactId>
         </dependency>
+
         <dependency>
             <groupId>org.reflections</groupId>
             <artifactId>reflections</artifactId>

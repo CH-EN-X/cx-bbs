@@ -18,12 +18,12 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.heima</groupId>
-            <artifactId>heima-leadnews-model</artifactId>
+            <groupId>com.cx</groupId>
+            <artifactId>cx-bbs-model</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.heima</groupId>
-            <artifactId>heima-leadnews-common</artifactId>
+            <groupId>com.cx</groupId>
+            <artifactId>cx-bbs-common</artifactId>
         </dependency>
     </dependencies>
 </project>

@@ -100,11 +100,11 @@
                 <groupId>com.cx</groupId>
                 <version>${project.version}</version>
             </dependency>
-            <!--            <dependency>-->
-            <!--                <artifactId>cx-bbs-utils</artifactId>-->
-            <!--                <groupId>com.cx</groupId>-->
-            <!--                <version>${project.version}</version>-->
-            <!--            </dependency>-->
+            <dependency>
+                <artifactId>cx-bbs-utils</artifactId>
+                <groupId>com.cx</groupId>
+                <version>${project.version}</version>
+            </dependency>
             <!-- Spring boot 特殊处理包 -->
             <dependency>
                 <groupId>org.reflections</groupId>
