@@ -9,7 +9,7 @@
     <modules>
         <module>cx-bbs-common</module>
         <module>cx-bbs-feign-api</module>
-        <module>cx-bbs-gateaway</module>
+        <module>cx-bbs-gateway</module>
         <module>cx-bbs-model</module>
         <module>cx-bbs-service</module>
         <module>cx-bbs-utils</module>
