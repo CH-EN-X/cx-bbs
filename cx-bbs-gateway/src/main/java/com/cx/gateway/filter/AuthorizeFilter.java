@@ -3,7 +3,7 @@ package com.cx.gateway.filter;
 
 
 
-import com.cx.gateway.util.JwtUtil;
+import com.cx.utils.common.JwtUtil;
 import io.jsonwebtoken.Claims;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;

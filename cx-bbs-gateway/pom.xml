@@ -33,6 +33,11 @@
             <groupId>io.jsonwebtoken</groupId>
             <artifactId>jjwt</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.cx</groupId>
+            <artifactId>cx-bbs-utils</artifactId>
+        </dependency>
+
     </dependencies>
 
 </project>
