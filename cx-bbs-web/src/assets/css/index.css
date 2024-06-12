@@ -442,3 +442,31 @@ body {
     width: 30px;
     height: 30px;
 }
+/*cx*/
+.fEPKGkUK5jyc4fUuT0QP, .yXNqP8Bkgas9d_XumHbv {
+  background-color: transparent;
+  border: none;
+  border-radius: 0;
+  height: auto;
+  line-height: inherit;
+  padding: 0;
+}
+.ContentItem-more {
+  color: #09408e; 
+  color: var(--GBL07A);
+  margin-left: 4px;
+  padding: 0;
+}
+.Button {
+  background: none;
+  /* border: 1px solid; */
+  border-radius: 3px;
+  color: #8491a5;
+  color: var(--GBL05A);
+  cursor: pointer;
+  display: inline-block;
+  font-size: 14px;
+  line-height: 32px;
+  padding: 0 16px;
+  text-align: center;
+}

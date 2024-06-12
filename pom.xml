@@ -13,6 +13,7 @@
         <module>cx-bbs-model</module>
         <module>cx-bbs-service</module>
         <module>cx-bbs-utils</module>
+        <module>cx-data</module>
     </modules>
     <name>cx-bbs</name>
     <description>cx-bbs</description>
