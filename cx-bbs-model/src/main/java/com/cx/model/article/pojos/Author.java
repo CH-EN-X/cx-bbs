@@ -1,4 +1,4 @@
-package com.cx.model.article;
+package com.cx.model.article.pojos;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;

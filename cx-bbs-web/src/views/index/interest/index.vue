@@ -54,8 +54,8 @@ function yuedu () {
   <div class="Topstory-content">
     <ul>
       <li v-for="v in topstorylist" :key="v.id">
-        <!-- <div @click="goDetails(v)"> -->
-        <div>
+        <div @click="goDetails(v)">
+          <!-- <div> -->
           <div class="topstory-hd">
             <img :src="v.img" alt="">
             <span>{{ v.name }}</span>
@@ -64,17 +64,17 @@ function yuedu () {
           <div class="topstory-articleitem">
             {{ v.articleitem }}
             <!-- <button type="button" @click="yuedu"
-                class="Button ContentItem-more FEfUrdfMIKpQDJDqkjte Button--plain fEPKGkUK5jyc4fUuT0QP">阅读全文
-                <span style="display: inline-flex; align-items: center;">
-                  ​<svg width="24" height="24" viewBox="0 0 24 24" class="Zi Zi--ArrowDown ContentItem-arrowIcon"
-                    fill="currentColor">
-                    <path fill-rule="evenodd"
-                      d="M17.776 10.517a.875.875 0 0 1-.248 1.212l-5.05 3.335a.875.875 0 0 1-.964 0L6.47 11.73a.875.875 0 1 1 .965-1.46l4.56 3.015 4.568-3.016a.875.875 0 0 1 1.212.248Z"
-                      clip-rule="evenodd">
-                    </path>
-                  </svg>
-                </span>
-              </button> -->
+                  class="Button ContentItem-more FEfUrdfMIKpQDJDqkjte Button--plain fEPKGkUK5jyc4fUuT0QP">阅读全文
+                  <span style="display: inline-flex; align-items: center;">
+                    ​<svg width="24" height="24" viewBox="0 0 24 24" class="Zi Zi--ArrowDown ContentItem-arrowIcon"
+                      fill="currentColor">
+                      <path fill-rule="evenodd"
+                        d="M17.776 10.517a.875.875 0 0 1-.248 1.212l-5.05 3.335a.875.875 0 0 1-.964 0L6.47 11.73a.875.875 0 1 1 .965-1.46l4.56 3.015 4.568-3.016a.875.875 0 0 1 1.212.248Z"
+                        clip-rule="evenodd">
+                      </path>
+                    </svg>
+                  </span>
+                </button> -->
           </div>
         </div>
         <div class="topstory-actions">
