@@ -19,7 +19,7 @@ public class ResponseResult<T> implements Serializable {
 
     private Integer code;
 
-    private String errorMessage;
+    private String message;
 
     private T data;
 
@@ -34,13 +34,13 @@ public class ResponseResult<T> implements Serializable {
 
     public ResponseResult(Integer code, String msg, T data) {
         this.code = code;
-        this.errorMessage = msg;
+        this.message = msg;
         this.data = data;
     }
 
     public ResponseResult(Integer code, String msg) {
         this.code = code;
-        this.errorMessage = msg;
+        this.message = msg;
     }
 
     public static ResponseResult errorResult(int code, String msg) {
@@ -54,7 +54,7 @@ public class ResponseResult<T> implements Serializable {
     }
 
     public static ResponseResult okResult(Object data) {
-        ResponseResult result = setHttpCodeEnum(HttpCodeEnum.SUCCESS, HttpCodeEnum.SUCCESS.getErrorMessage());
+        ResponseResult result = setHttpCodeEnum(HttpCodeEnum.SUCCESS, HttpCodeEnum.SUCCESS.getMessage());
         if(data!=null) {
             result.setData(data);
         }
@@ -62,24 +62,24 @@ public class ResponseResult<T> implements Serializable {
     }
 
     public static ResponseResult errorResult(HttpCodeEnum enums){
-        return setHttpCodeEnum(enums,enums.getErrorMessage());
+        return setHttpCodeEnum(enums,enums.getMessage());
     }
 
-    public static ResponseResult errorResult(HttpCodeEnum enums, String errorMessage){
-        return setHttpCodeEnum(enums,errorMessage);
+    public static ResponseResult errorResult(HttpCodeEnum enums, String message){
+        return setHttpCodeEnum(enums,message);
     }
 
     public static ResponseResult setHttpCodeEnum(HttpCodeEnum enums){
-        return okResult(enums.getCode(),enums.getErrorMessage());
+        return okResult(enums.getCode(),enums.getMessage());
     }
 
-    private static ResponseResult setHttpCodeEnum(HttpCodeEnum enums, String errorMessage){
-        return okResult(enums.getCode(),errorMessage);
+    private static ResponseResult setHttpCodeEnum(HttpCodeEnum enums, String message){
+        return okResult(enums.getCode(),message);
     }
 
     public ResponseResult<?> error(Integer code, String msg) {
         this.code = code;
-        this.errorMessage = msg;
+        this.message = msg;
         return this;
     }
 
@@ -92,7 +92,7 @@ public class ResponseResult<T> implements Serializable {
     public ResponseResult<?> ok(Integer code, T data, String msg) {
         this.code = code;
         this.data = data;
-        this.errorMessage = msg;
+        this.message = msg;
         return this;
     }
 
@@ -109,12 +109,12 @@ public class ResponseResult<T> implements Serializable {
         this.code = code;
     }
 
-    public String getErrorMessage() {
-        return errorMessage;
+    public String getMessage() {
+        return message;
     }
 
-    public void setErrorMessage(String errorMessage) {
-        this.errorMessage = errorMessage;
+    public void setMessage(String message) {
+        this.message = message;
     }
 
     public T getData() {
