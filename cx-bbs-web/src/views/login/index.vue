@@ -1,4 +1,4 @@
-<script setup>
+<script  lang="ts" setup>
 import axios from 'axios';
 import { ref, reactive } from 'vue'
 import { useRouter } from 'vue-router'
@@ -10,8 +10,24 @@ const form = reactive({
 })
 const activeName = ref('first')
 
+import { ElLoading } from 'element-plus';
+
+let loadingInstance: any;
+const startLoading = () => {
+  loadingInstance = ElLoading.service({
+    lock: true,
+    text: '加载中……',
+    background: 'rgba(0, 0, 0, 0.7)'
+  });
+};
+function endLoading() {
+  loadingInstance.close();
+}
+
 function toIndex () {
   router.push('/index')
+  startLoading()
+  endLoading()
 }
 
 function login () {
@@ -19,12 +35,12 @@ function login () {
   axios.post("http://localhost:8081/api/login/login_auth", { phone: form.phone, password: form.password })
     .then(response => {
       const router = useRouter();
-      console.log(response.data.message);
       // 处理登录成功的逻辑
       if (response.data.code === 200) {
+        ElMessage.success("登录成功")
         toIndex();
       } else {
-        ElMessage("账号或密码错误");
+        ElMessage.error(response.data.message);
       }
     })
     .catch(error => {
@@ -35,53 +51,53 @@ function login () {
 
 </script>
 
-<script>
-import axios from 'axios';
-import { ref, reactive } from 'vue'
-import { useRouter } from 'vue-router'
-const router = useRouter();
-export default {
-  name: 'MyComponent',
-  data () {
-    return {
-      form: {
-        phone: '',
-        password: '',
-      }
-    }
-  },
-  methods: {
+<!--<script>-->
+<!--import axios from 'axios';-->
+<!--import { ref, reactive } from 'vue'-->
+<!--import { useRouter } from 'vue-router'-->
+<!--const router = useRouter();-->
+<!--export default {-->
+<!--  name: 'MyComponent',-->
+<!--  data () {-->
+<!--    return {-->
+<!--      form: {-->
+<!--        phone: '',-->
+<!--        password: '',-->
+<!--      }-->
+<!--    }-->
+<!--  },-->
+<!--  methods: {-->
 
-    login () {
-      this.$nextTick(() => {
-        console.log('Phone:', this.form.phone.valueOf);
-        console.log('Password:', this.form.password);
-        // 在这里可以使用 this.form.phone 和 this.form.password 获取输入框的值
-      });
-      axios.post("http://localhost:51801/api/v1/login/login_auth", { phone: this.form.phone, password: this.form.password })
-        .then(response => {
-          const router = useRouter();
-          console.log(response.data.message);
-          // 处理登录成功的逻辑
-          router.push('/index')
-        })
-      // .catch(error => {
-      //   console.error(error.response.data.message);
-      //   // 处理登录失败的逻辑
-      // });
+<!--    login () {-->
+<!--      this.$nextTick(() => {-->
+<!--        console.log('Phone:', this.form.phone.valueOf);-->
+<!--        console.log('Password:', this.form.password);-->
+<!--        // 在这里可以使用 this.form.phone 和 this.form.password 获取输入框的值-->
+<!--      });-->
+<!--      axios.post("http://localhost:51801/api/v1/login/login_auth", { phone: this.form.phone, password: this.form.password })-->
+<!--        .then(response => {-->
+<!--          const router = useRouter();-->
+<!--          console.log(response.data.message);-->
+<!--          // 处理登录成功的逻辑-->
+<!--          router.push('/index')-->
+<!--        })-->
+<!--      // .catch(error => {-->
+<!--      //   console.error(error.response.data.message);-->
+<!--      //   // 处理登录失败的逻辑-->
+<!--      // });-->
 
-    }, fetchData () {
-      axios.get('https://jsonplaceholder.typicode.com/posts')
-        .then(response => {
-          console.log(response.data);
-        })
-        .catch(error => {
-          console.log(error);
-        });
-    },
-  }
-};
-</script> -->
+<!--    }, fetchData () {-->
+<!--      axios.get('https://jsonplaceholder.typicode.com/posts')-->
+<!--        .then(response => {-->
+<!--          console.log(response.data);-->
+<!--        })-->
+<!--        .catch(error => {-->
+<!--          console.log(error);-->
+<!--        });-->
+<!--    },-->
+<!--  }-->
+<!--};-->
+<!--</script> &ndash;&gt;-->
 
 
 <template>
@@ -108,7 +124,7 @@ export default {
             <el-tab-pane label="账号登录" name="first">
               <el-input v-model="form.phone" placeholder="请输入手机/用户名" />
               <el-input v-model="form.password" type="password" placeholder="请输入密码" />
-              <el-button type="primary" @click="login">登录</el-button>
+              <el-button :plain="true" type="primary" @click="login">登录</el-button>
               <div class="otherwise">
                 <div class="otherwise-title">其他方式登录</div>
                 <ul>
