@@ -28,19 +28,19 @@ public enum HttpCodeEnum {
     NEED_ADMIND(3001,"需要管理员权限");
 
     int code;
-    String errorMessage;
+    String message;
 
-    HttpCodeEnum(int code, String errorMessage){
+    HttpCodeEnum(int code, String message){
         this.code = code;
-        this.errorMessage = errorMessage;
+        this.message = message;
     }
 
     public int getCode() {
         return code;
     }
 
-    public String getErrorMessage() {
-        return errorMessage;
+    public String getMessage() {
+        return message;
     }
 
 
