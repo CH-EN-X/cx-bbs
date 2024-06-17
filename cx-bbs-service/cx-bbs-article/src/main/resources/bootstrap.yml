@@ -1,0 +1,12 @@
+server:
+  port: 51602
+spring:
+  application:
+    name: cx-bbs-article
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 121.40.128.97:8848
+      config:
+        server-addr: 121.40.128.97:8848
+        file-extension: yml

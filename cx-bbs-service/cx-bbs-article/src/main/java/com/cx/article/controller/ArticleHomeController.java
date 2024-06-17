@@ -5,15 +5,12 @@ import com.cx.common.constants.ArticleConstants;
 import com.cx.model.article.dtos.ArticleHomeDto;
 import com.cx.model.common.dtos.ResponseResult;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  *
  */
-
+@CrossOrigin
 @RestController
 @RequestMapping("/api/article")
 public class ArticleHomeController {

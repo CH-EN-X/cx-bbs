@@ -5,8 +5,10 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.cx.article.mapper.ArticleMapper;
 import com.cx.article.service.ArticleService;
 import com.cx.common.constants.ArticleConstants;
+import com.cx.model.article.dtos.ArticleDto;
 import com.cx.model.article.pojos.Article;
 import com.cx.model.article.dtos.ArticleHomeDto;
+import com.cx.model.article.pojos.ArticleContent;
 import com.cx.model.common.dtos.ResponseResult;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @Transactional
@@ -49,7 +52,7 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
         if(dto.getMaxBehotTime() == null) dto.setMaxBehotTime(new Date());
         if(dto.getMinBehotTime() == null) dto.setMinBehotTime(new Date());
         //2.查询数据
-        List<Article> articles = articleMapper.loadArticleList(dto, loadtype);
+        List<ArticleDto> articles = articleMapper.loadArticleList(dto, loadtype);
         //3.结果封装
         ResponseResult responseResult = ResponseResult.okResult(articles);
         return responseResult;
