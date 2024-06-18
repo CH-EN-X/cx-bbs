@@ -10,7 +10,7 @@ const useMenus = ref([
 
 <template>
   <el-menu :default-active="$route.path" class="el-menu-demo" mode="horizontal" router>
-    <el-menu-item index="0">
+    <el-menu-item index="">
       <!-- <img src="/src/assets/image/logo.png" alt="" style="width: 80px"> -->
       <svg width="80" height="40" xmlns="http://www.w3.org/2000/svg">
         <title>晨曦</title>

@@ -1,8 +1,8 @@
 <template>
-  <el-button :plain="true" @click="open2">Success</el-button>
-  <el-button :plain="true" @click="open3">Warning</el-button>
-  <el-button :plain="true" @click="open1">Message</el-button>
-  <el-button :plain="true" @click="open4">Error</el-button>
+<!--  <el-button :plain="true" @click="open2">Success</el-button>-->
+<!--  <el-button :plain="true" @click="open3">Warning</el-button>-->
+<!--  <el-button :plain="true" @click="open1">Message</el-button>-->
+<!--  <el-button :plain="true" @click="open4">Error</el-button>-->
 </template>
 
 <script setup lang="ts">

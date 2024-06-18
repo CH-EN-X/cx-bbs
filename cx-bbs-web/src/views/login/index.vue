@@ -32,7 +32,7 @@ function toIndex () {
 
 function login () {
 
-  axios.post("http://localhost:8081/api/login/login_auth", { phone: form.phone, password: form.password })
+  axios.post("http://localhost:51801/api/login/login_auth", { phone: form.phone, password: form.password })
     .then(response => {
       const router = useRouter();
       // 处理登录成功的逻辑
