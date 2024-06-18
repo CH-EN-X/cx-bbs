@@ -1,5 +1,5 @@
 server:
-  port: 51602
+  port: 51802
 spring:
   application:
     name: cx-bbs-article
