@@ -104,7 +104,7 @@ function login () {
   <div class="login">
     <el-form :model="form" label-width="120px">
       <div class="login-img">
-        <img src="@/assets/image/v2.png" alt="">
+<!--        <img src="@/assets/image/logo2.svg" alt="">-->
       </div>
       <div class="login-item">
         <div class="loginleft">

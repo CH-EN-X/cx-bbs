@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted, createVNode } from 'vue';
 import { useRouter } from 'vue-router'
 import axios from "axios";
 import {ElMessage} from "element-plus";
@@ -18,6 +18,13 @@ const topstorylist = ref([
   }
 ])
 
+const articleContent  = '<p>是有这种情况啊，不然为什么抖音那些博主干一年就买房了，或者不声不响就提车了？再不济也能不上班靠着发视频养活自己。</p><p>注意，我说的是博主！！<strong>由于普通人和博主之间有信息差，用着一个app相当于在两个世界</strong>，他们发视频就能赚钱，你发视频可能有点赞，有播放，但就是不能赚钱。</p><p>由于工作原因，<strong>我接触博主挺多，分享几个抖音发就能赚钱的视频形式</strong>，你肯定刷到过，很常见的视频：</p><p>1.风景文案视频</p><p><img src="https://picx.zhimg.com/50/v2-7490283665ab02ecb0a204ffca29780e_720w.jpg?source=2c26e567" alt="" data-href="" style=""/></p><p><img src="https://picx.zhimg.com/80/v2-7490283665ab02ecb0a204ffca29780e_720w.webp?source=2c26e567" alt="" data-href="" style=""/></p><p>一段风景视频+音乐+文案</p><p>博主没开橱窗，没直播，视频中就是风景，没有商品广告</p><p>要不是我看到<strong>评论区的置顶</strong>，还以为他天天是在为爱发电呢</p>';
+const content = ref(null);
+
+onMounted(() => {
+  content.value.innerHTML = articleContent;
+});
+
 
 const dialogVisible = ref(false);
 //跳转到详情页
@@ -30,7 +37,7 @@ function yuedu () {
 }
 
 function load(){
-  axios.post("http://localhost:51602/api/article/load",{
+  axios.post("http://localhost:51802/api/article/load",{
     maxBehotTime: "",
     minBehotTime: "",
     size: 25,
@@ -43,6 +50,7 @@ function load(){
       //将string转成json对象
       for (let i = 0; i < response.data.data.length; i++) {
         topstorylist.value[i].content = eval(response.data.data[i].content);
+        articleContent = response.data.data[i].content;
       }
       // console.log(  eval(response.data.data[0].content))
     } else {
@@ -69,10 +77,13 @@ load()
 <!--            {{ v.content }}-->
 <!--          </div>-->
            <div class="topstory-articleitem">
-             <div v-for="(item,i) in v.content" :key="item.type" >
-               <template v-if="item.type === 'text'">
-                 <p>{{ item.value }}</p>
-               </template>
+<!--             <div v-for="(item,i) in v.content" :key="item.type" >-->
+<!--               <template v-if="item.type === 'text'">-->
+<!--                 <p>{{ item.value }}</p>-->
+<!--               </template>-->
+<!--             </div>-->
+             <div>
+               <div ref="content"></div>
              </div>
            </div>
 
@@ -107,6 +118,7 @@ load()
             </li>
           </ul>
         </div>
+
       </li>
     </ul>
     <!-- 对话框  -->
