@@ -341,9 +341,7 @@ a {
     align-self: normal;
     margin-right: 200px;
 }
-.Question-sideColumn {
-    width: 296px;
-}
+
 .Question-mainColumnLogin {
     background-color: #fff;
     background-color: var(--GBK99A);
