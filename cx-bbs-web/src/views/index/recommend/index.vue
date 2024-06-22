@@ -1,11 +1,10 @@
 <script setup>
-import { ref, onMounted, createVNode } from 'vue';
+import {ref, onMounted, createVNode, reactive} from 'vue';
 import { useRouter } from 'vue-router'
 import axios from "axios";
 import {ElMessage} from "element-plus";
-const topstorylist = ref([
+const questions = ref([
   {
-
     img: '/src/assets/image/pic5.png',
     // name: '喵先生',
     id: 1,
@@ -13,6 +12,7 @@ const topstorylist = ref([
     content: [],
     favour: 88,
     like: true,
+    comments: 11,
   }
 ])
 
@@ -32,7 +32,13 @@ const dialogVisible = ref(false);
 //跳转到详情页
 const router = useRouter();
 function goDetails (v) {
-  router.push('/details')
+  // router.push('/details')
+  router.push({
+    path:'/details',
+    query:{
+      question: v
+    }
+  })
 }
 function yuedu () {
   //TODO:通过点击按钮，在当前页面查看文章
@@ -48,15 +54,11 @@ function load(){
     // 处理登录成功的逻辑
     if (response.data.code === 200) {
       // response.data.data.content = response.data.data.content.slice(1, -1);
-      topstorylist.value=response.data.data ;
+      questions.value=response.data.data ;
       //将string转成json对象
       for (let i = 0; i < response.data.data.length; i++) {
-        // topstorylist.value[i].content = eval(response.data.data[i].content);
-        topstorylist.value[i].content = response.data.data[i].content;
-        // console.log(  response.data.data[0].content)
-        // articleContent = response.data.data[i].content;
+        questions.value[i].content = response.data.data[i].content;
       }
-      // console.log(  eval(response.data.data[0].content))
     } else {
       ElMessage.error(response.data.message);
     }
@@ -70,7 +72,7 @@ load()
   <div class="Topstory-content">
     <ul>
 <!--      :key=v.id点击获取id-->
-      <li v-for="(v,index) in topstorylist" :key="v.id">
+      <li v-for="(v,index) in questions" :key="v.id">
         <div @click="goDetails(v)">
           <div class="topstory-hd">
             <!-- <img :src="v.img" alt=""> -->
@@ -86,31 +88,36 @@ load()
         <div class="topstory-actions">
           <ul>
             <li>
-              <div>
-                <i class="iconfont icon-xiangshang1"></i>赞成{{ v.favour }}
-              </div>
-              <div>
+
+              <el-button style="line-height: 30px;padding: 0 12px;border: none;" type="primary" @click="v.likes--;v.like=false" v-if="v.like">
+                <i class="iconfont icon-xiangshang1"></i>已赞成{{ v.likes }}
+              </el-button>
+              <el-button style="line-height: 30px;padding: 0 12px;border: none;" @click="v.likes++;v.like=true;v.dislike=false;likeUp()" v-else="v.like">
+                <i class="iconfont icon-xiangshang1"></i>赞成{{ v.likes }}
+              </el-button>
+              <el-button style="line-height: 30px;padding: 0 12px;border: none;margin-left: 0px;" @click="v.likes--;v.dislike=true;v.like=false" v-if="!v.dislike">
                 <i class="iconfont icon-xiangxia2"></i>
-              </div>
+              </el-button>
+              <el-button style="line-height: 30px;padding: 0 12px;border: none;margin-left: 0px;" @click="v.likes++;v.dislike=false;likeUp()" type="primary" v-else>
+                <i class="iconfont icon-xiangxia2"></i>
+              </el-button>
             </li>
             <li>
               <i class="iconfont icon-xiaoxi"></i>
               <span>11条评伦</span>
             </li>
-
-            <li :class="v.like ? 'approve-like' : ''" @click="v.like = !v.like">
-              <i class="iconfont icon-icon-"></i>
-              <span>{{ v.like ? '取消喜欢' : '喜欢' }}</span>
+            <li>
+              <i class="iconfont icon-fenxiang"></i>
+              <span>分享</span>
             </li>
             <li @click="dialogVisible = true">
               <i class="iconfont icon-shoucang"></i>
               <span>收藏</span>
             </li>
-
-            <li>
-              <i class="iconfont icon-fenxiang" ></i>
-              <span>分享</span>
-            </li>
+<!--            <li :class="v.like ? 'approve-like' : ''" @click="v.like = !v.like">-->
+<!--              <i class="iconfont icon-icon-"></i>-->
+<!--              <span>{{ v.like ? '取消喜欢' : '喜欢' }}</span>-->
+<!--            </li>-->
           </ul>
         </div>
 
