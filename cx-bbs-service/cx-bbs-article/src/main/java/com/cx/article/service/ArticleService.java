@@ -5,7 +5,7 @@ import com.cx.model.article.pojos.Article;
 import com.cx.model.article.dtos.ArticleHomeDto;
 import com.cx.model.common.dtos.ResponseResult;
 
-public interface ArticleService  extends IService<Article> {
+public interface ArticleService extends IService<Article> {
 
     /**
      * 根据参数加载文章列表
@@ -14,5 +14,7 @@ public interface ArticleService  extends IService<Article> {
      * @return
      */
     ResponseResult load(Short loadtype, ArticleHomeDto dto);
+
+//    ResponseResult loadContent(Integer id);
 
 }

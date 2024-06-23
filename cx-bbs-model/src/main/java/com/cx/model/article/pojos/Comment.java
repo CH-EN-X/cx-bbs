@@ -3,40 +3,41 @@ package com.cx.model.article.pojos;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 /**
  * <p>
- * 提问表，发布的提问
+ * 
  * </p>
  *
  * @author cx
- * @since 2024-06-08
+ * @since 2024-06-23
  */
-@ApiModel(value = "Questions对象", description = "提问表，发布的提问")
-public class Questions implements Serializable {
+@ApiModel(value = "Comment对象", description = "")
+public class Comment implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @ApiModelProperty("提问的id")
+    @ApiModelProperty("评论id")
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
-    @ApiModelProperty("回答的文章id")
+    @ApiModelProperty("0问题的  1回答的")
+    private Byte type;
+
+    @ApiModelProperty("文章ID")
     private Long articleId;
 
-    @ApiModelProperty("提问内容")
+    @ApiModelProperty("评论内容")
     private String content;
 
-    @ApiModelProperty("标题")
-    private String title;
+    @ApiModelProperty("发布时间")
+    private LocalDateTime publishedTime;
 
-    @ApiModelProperty("文章作者的ID")
-    private Integer authorId;
-
-    @ApiModelProperty("点赞数量")
-    private String likes;
+    @ApiModelProperty("发布评论的人id")
+    private Long userId;
 
     public Long getId() {
         return id;
@@ -44,6 +45,14 @@ public class Questions implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Byte getType() {
+        return type;
+    }
+
+    public void setType(Byte type) {
+        this.type = type;
     }
 
     public Long getArticleId() {
@@ -62,39 +71,31 @@ public class Questions implements Serializable {
         this.content = content;
     }
 
-    public String getTitle() {
-        return title;
+    public LocalDateTime getPublishedTime() {
+        return publishedTime;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setPublishedTime(LocalDateTime publishedTime) {
+        this.publishedTime = publishedTime;
     }
 
-    public Integer getAuthorId() {
-        return authorId;
+    public Long getUserId() {
+        return userId;
     }
 
-    public void setAuthorId(Integer authorId) {
-        this.authorId = authorId;
-    }
-
-    public String getLikes() {
-        return likes;
-    }
-
-    public void setLikes(String likes) {
-        this.likes = likes;
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
     @Override
     public String toString() {
-        return "Questions{" +
+        return "Comment{" +
             "id = " + id +
+            ", type = " + type +
             ", articleId = " + articleId +
             ", content = " + content +
-            ", title = " + title +
-            ", authorId = " + authorId +
-            ", likes = " + likes +
+            ", publishedTime = " + publishedTime +
+            ", userId = " + userId +
         "}";
     }
 }

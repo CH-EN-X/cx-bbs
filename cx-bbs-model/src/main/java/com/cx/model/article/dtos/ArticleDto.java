@@ -2,16 +2,12 @@ package com.cx.model.article.dtos;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
-import com.cx.model.article.pojos.Article;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Value;
 
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Map;
 
 @Data
 @AllArgsConstructor

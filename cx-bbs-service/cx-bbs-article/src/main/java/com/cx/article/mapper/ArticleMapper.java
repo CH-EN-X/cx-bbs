@@ -8,13 +8,13 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
-import java.util.Map;
 
 @Mapper
 public interface ArticleMapper extends BaseMapper<Article> {
 
     public List<ArticleDto> loadArticleList(@Param("dto") ArticleHomeDto dto, @Param("type") Short type);
 
+    ArticleDto detail(@Param("id") Integer id);
 
 
 //        public List<Map<String,Object>> loadArticleList(@Param("dto") ArticleHomeDto dto, @Param("type") Short type);

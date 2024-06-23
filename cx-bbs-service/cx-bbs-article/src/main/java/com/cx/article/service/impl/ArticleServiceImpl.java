@@ -2,13 +2,15 @@ package com.cx.article.service.impl;
 
 import com.alibaba.cloud.commons.lang.StringUtils;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.cx.article.mapper.ArticleContentMapper;
 import com.cx.article.mapper.ArticleMapper;
+import com.cx.article.mapper.QuestionMapper;
 import com.cx.article.service.ArticleService;
 import com.cx.common.constants.ArticleConstants;
 import com.cx.model.article.dtos.ArticleDto;
 import com.cx.model.article.pojos.Article;
 import com.cx.model.article.dtos.ArticleHomeDto;
-import com.cx.model.article.pojos.ArticleContent;
+import com.cx.model.article.pojos.Question;
 import com.cx.model.common.dtos.ResponseResult;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +19,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 @Service
 @Transactional
@@ -29,6 +30,12 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
 
     @Autowired
     private ArticleMapper articleMapper;
+
+    @Autowired
+    private ArticleContentMapper articleContentMapper;
+
+    @Autowired
+    private QuestionMapper questionMapper;
 
     /**
      * 根据参数加载文章列表
@@ -57,5 +64,19 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
         ResponseResult responseResult = ResponseResult.okResult(articles);
         return responseResult;
     }
+
+//    @Override
+//    public ResponseResult loadContent(Integer id) {
+//        //查询到提问
+//        Questions questions = questionMapper.selectById(id);
+//        //查询该问题下的所有回答 , 条件构造器QueryWrapper构建条件查询
+//        QueryWrapper<Article> queryWrapper = new QueryWrapper<>();
+//        queryWrapper.eq("question_id", questionId); // 添加查询条件：question_id = questionId
+//        List<Article> articleList = articleMapper.selectList(queryWrapper);
+//        //内容
+//
+//        ArticleContent articleContent = articleContentMapper.selectById(id);
+//        return null;
+//    }
 
 }
