@@ -32,13 +32,24 @@ const dialogVisible = ref(false);
 //跳转到详情页
 const router = useRouter();
 function goDetails (v) {
-  // router.push('/details')
   router.push({
-    path:'/details',
-    query:{
-      question: v
-    }
-  })
+    name: 'details',
+    params: { id: v }
+  });
+  // router.push('/details')
+  // router.push({
+  //   // path:'/details',//+v,
+  //   // query:{
+  //   //   id:v
+  //   // }
+  //   path: `/details/${v}`,
+  // })
+  // this.$router.push({
+  //   path: '/particulars',
+  //   query: {
+  //     id: id
+  //   }
+  // })
 }
 function yuedu () {
   //TODO:通过点击按钮，在当前页面查看文章
@@ -73,7 +84,7 @@ load()
     <ul>
 <!--      :key=v.id点击获取id-->
       <li v-for="(v,index) in questions" :key="v.id">
-        <div @click="goDetails(v)">
+        <div @click="goDetails(v.questionId)">
           <div class="topstory-hd">
             <!-- <img :src="v.img" alt=""> -->
             <span>{{ v.name }}</span>
@@ -139,6 +150,7 @@ load()
         </span>
       </template>
     </el-dialog>
+
   </div>
 </template>
 

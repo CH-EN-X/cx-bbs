@@ -59,8 +59,8 @@ const routes =[
                 component:()=>import('../views/waiting/index.vue')
             },
             {
-                path:'/details',   //详情页
-                name:'waidetailsting',
+                path:'/details/:id',   //详情页
+                name:'details',
                 component:()=>import('../views/details/index.vue')
             }
         ]

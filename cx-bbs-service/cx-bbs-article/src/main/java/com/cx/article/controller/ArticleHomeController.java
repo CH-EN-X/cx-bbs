@@ -7,6 +7,8 @@ import com.cx.model.common.dtos.ResponseResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.websocket.server.PathParam;
+
 /**
  *
  */
@@ -32,6 +34,11 @@ public class ArticleHomeController {
     public ResponseResult loadNew(@RequestBody ArticleHomeDto dto) {
         return articleService.load(ArticleConstants.LOADTYPE_LOAD_NEW,dto);
     }
+
+//    @PostMapping("/content")
+//    public ResponseResult loadContent(@PathParam("id") Integer id) {
+//        return articleService.loadContent(id);
+//    }
 
 //    @PostMapping("/load")
 //    public ResponseResult load(@RequestBody ArticleHomeDto dto) {

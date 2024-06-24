@@ -26,33 +26,13 @@
         <result column="sync_status" property="syncStatus"/>
         <result column="static_url" property="staticUrl"/>
         <result column="content" property="content"/>
+        <result column="question_id" property="questionId"/>
     </resultMap>
     <select id="loadArticleList" resultMap="resultMap">
-<!--        SELECT-->
-<!--        aa.*-->
-<!--        FROM-->
-<!--        `article` aa-->
-<!--        LEFT JOIN article_config aac ON aa.id = aac.article_id-->
-<!--        <where>-->
-<!--            and aac.is_delete != 1-->
-<!--            and aac.is_down != 1-->
-<!--            &lt;!&ndash; loadmore &ndash;&gt;-->
-<!--            <if test="type != null and type == 1">-->
-<!--                and aa.publish_time <![CDATA[<]]> #{dto.minBehotTime}-->
-<!--            </if>-->
-<!--            <if test="type != null and type == 2">-->
-<!--                and aa.publish_time <![CDATA[>]]> #{dto.maxBehotTime}-->
-<!--            </if>-->
-<!--            <if test="dto.tag != '__all__'">-->
-<!--                and aa.channel_id = #{dto.tag}-->
-<!--            </if>-->
-<!--        </where>-->
-<!--        order by aa.publish_time desc-->
-<!--        limit #{dto.size}-->
-
         SELECT
         aa.*,
         ac.content as content
+--         ac.question_id
         FROM
         `article` aa
         LEFT JOIN article_config aac ON aa.id = aac.article_id
@@ -73,6 +53,16 @@
         </where>
         order by aa.publish_time desc
         limit #{dto.size}
+    </select>
+    <select id="detail" resultType="com.cx.model.article.dtos.ArticleDto">
+        SELECT
+            aa.*,
+            ac.*
+        FROM
+            article aa
+                LEFT JOIN article_content ac ON aa.id = ac.article_id
+        WHERE
+            aa.id = #{id}
     </select>
 
 </mapper>

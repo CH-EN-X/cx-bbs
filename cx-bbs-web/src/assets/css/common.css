@@ -6,7 +6,7 @@
 body, input, button, a, textarea, select {
     margin: 0;
     font-family: "Helvetica Neue", Helvetica, "Hiragino Sans GB", "Microsoft YaHei", Arial, sans-serif;
-    font-size: 1.4rem;
+    font-size: 1.0rem;
     color: #333;
   }
   a,
@@ -38,11 +38,11 @@ body, input, button, a, textarea, select {
   i, em {
     font-style: normal;
   }
-  
+
   label {
     font-weight: normal;
   }
-  
+
   h2, h3, h4, p, dl, dt, dd {
     margin: 0;
     padding: 0;
@@ -58,7 +58,7 @@ body, input, button, a, textarea, select {
     -moz-box-sizing: border-box;
     box-sizing: border-box;
   }
-  
+
   /* css3过渡动画效果 */
   .trans {
     -webkit-transition: all 0.3s;
@@ -66,7 +66,7 @@ body, input, button, a, textarea, select {
     -o-transition: all 0.3s;
     transition: all 0.3s;
   }
-  
+
   /* 文本对齐 */
   .fn-textcenter {
     text-align: center;
@@ -82,7 +82,7 @@ body, input, button, a, textarea, select {
   a:focus, button:focus, input:focus {
     outline: none;
   }
-  
+
   /* 单行文字溢出省略号 */
   .ell {
     overflow: hidden;
@@ -91,7 +91,7 @@ body, input, button, a, textarea, select {
     word-break: keep-all;
     word-wrap: normal;
   }
-  
+
   /* 清理浮动 */
   .fn-clear {
     zoom: 1;
