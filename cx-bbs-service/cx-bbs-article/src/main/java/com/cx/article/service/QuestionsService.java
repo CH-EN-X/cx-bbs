@@ -1,7 +1,9 @@
 package com.cx.article.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.cx.model.article.dtos.QuestionDto;
 import com.cx.model.article.pojos.Question;
+import com.cx.model.common.dtos.ResponseResult;
 
 /**
  * <p>
@@ -13,4 +15,5 @@ import com.cx.model.article.pojos.Question;
  */
 public interface QuestionsService extends IService<Question> {
 
+    ResponseResult add(QuestionDto questionDto);
 }

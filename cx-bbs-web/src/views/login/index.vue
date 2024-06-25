@@ -7,6 +7,8 @@ const router = useRouter();
 const form = reactive({
   phone: '',
   password: '',
+  input3: '',
+  input5: '',
 })
 const activeName = ref('first')
 
@@ -28,6 +30,22 @@ function toIndex () {
   router.push('/index')
   startLoading()
   endLoading()
+}
+
+function reg () {
+  axios.post("http://localhost:51801/api/user/reg", { phone: form.input3, password: form.input5 })
+      .then(response => {
+        const router = useRouter();
+        // 处理登录成功的逻辑
+        if (response.data.code === 200) {
+          ElMessage.success("注册成功")
+        } else {
+          ElMessage.error(response.data.message);
+        }
+      })
+      .catch(error => {
+
+      });
 }
 
 function login () {
@@ -146,8 +164,9 @@ function login () {
                 </ul>
               </div>
             </el-tab-pane>
-            <el-tab-pane label="注册" name="second">
-              <el-input v-model="form.input3" placeholder="请输入手机/用户名" />
+            <el-tab-pane label="注册" name="second" @click="reg">
+              <el-input v-model="form.input3" placeholder="请输入用户名" />
+<!--              <el-input v-model="form.input3" placeholder="请输入邮箱号" />-->
               <div class="code-btn">
                 <el-input v-model="form.input4" placeholder="请输入验证码" />
                 <el-link type="primary">获取验证码</el-link>

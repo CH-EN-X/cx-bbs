@@ -23,6 +23,12 @@
     </properties>
 
     <dependencies>
+        <!--引入邮件 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-mail</artifactId>
+        </dependency>
+
         <!-- 引入依赖模块 -->
         <dependency>
             <groupId>com.cx</groupId>
