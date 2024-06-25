@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.cx.model.common.dtos.ResponseResult;
 import com.cx.model.user.User;
 import com.cx.model.user.dtos.LoginDto;
+import org.springframework.stereotype.Service;
 
 /**
  * <p>
@@ -14,7 +15,11 @@ import com.cx.model.user.dtos.LoginDto;
  * @author cx
  * @since 2024-06-08
  */
+@Service
 public interface IUserService extends IService<User> {
 
     ResponseResult<User> login(LoginDto loginDto);
+
+    ResponseResult<User> reg(LoginDto loginDto);
+
 }

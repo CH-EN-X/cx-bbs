@@ -10,10 +10,13 @@ import com.cx.model.user.dtos.LoginDto;
 import com.cx.user.mapper.UserMapper;
 import com.cx.user.service.IUserService;
 import com.cx.utils.common.JwtUtil;
+import com.cx.utils.common.MD5Utils;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 
+import javax.annotation.Resource;
 import java.sql.Wrapper;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -27,6 +30,9 @@ import java.util.Map;
  */
 @Service
 public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IUserService {
+
+    @Resource
+    UserMapper userMapper;
 
     @Override
     public ResponseResult<User> login(LoginDto loginDto) {
@@ -64,5 +70,23 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
             return ResponseResult.okResult(map);
         }
 
+    }
+
+    @Override
+    public ResponseResult reg(LoginDto loginDto) {
+        if (loginDto.getPhone() == null && loginDto.getPassword() == null) {
+            return ResponseResult.errorResult(400,"用户名或密码");
+        }
+        if(userMapper.selectOne(Wrappers.<User>lambdaQuery().eq(User::getPhone, loginDto.getPhone())) != null){
+            return ResponseResult.errorResult(400,"用户已存在");
+        }
+        User user = new User();
+        String salt = "abc";
+        user.setSalt(salt);
+        user.setPhone(loginDto.getPhone());
+        user.setPassword(MD5Utils.encode(loginDto.getPassword()+salt));
+        user.setCreatedTime(LocalDateTime.now());
+        userMapper.insert(user);
+        return ResponseResult.okResult(200,"注册成功");
     }
 }
