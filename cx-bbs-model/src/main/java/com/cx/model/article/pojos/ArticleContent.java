@@ -6,6 +6,9 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * <p>
@@ -15,6 +18,9 @@ import io.swagger.annotations.ApiModelProperty;
  * @author cx
  * @since 2024-06-08
  */
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 @TableName("article_content")
 @ApiModel(value = "ArticleContent对象", description = "已发布文章内容表")
 public class ArticleContent implements Serializable {
@@ -31,36 +37,5 @@ public class ArticleContent implements Serializable {
     @ApiModelProperty("文章内容")
     private String content;
 
-    public Long getId() {
-        return id;
-    }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Long getArticleId() {
-        return articleId;
-    }
-
-    public void setArticleId(Long articleId) {
-        this.articleId = articleId;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
-
-    @Override
-    public String toString() {
-        return "ArticleContent{" +
-            "id = " + id +
-            ", articleId = " + articleId +
-            ", content = " + content +
-        "}";
-    }
 }

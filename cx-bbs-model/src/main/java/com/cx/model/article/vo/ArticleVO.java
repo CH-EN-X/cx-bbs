@@ -2,6 +2,7 @@ package com.cx.model.article.vo;
 
 import com.cx.model.article.pojos.Question;
 import com.cx.model.user.vo.UserVO;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,9 +16,10 @@ import java.util.List;
 @AllArgsConstructor
 public class ArticleVO {
     //id
+    @JsonFormat(shape = JsonFormat.Shape.STRING) //将 Long 类型转换成 String 类型
     private Long id;
     //作者id
-    private Long authorId;
+    private Integer authorId;
     //作者
     private UserVO author;
     //内容

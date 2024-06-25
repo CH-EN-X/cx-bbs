@@ -1,8 +1,10 @@
 package com.cx.model.article.vo;
 
+import com.alibaba.fastjson.serializer.ToStringSerializer;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.cx.model.article.pojos.Question;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -17,6 +19,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class QuestionVO {
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING)
     private Long id;
 
     //提问内容
@@ -26,6 +29,7 @@ public class QuestionVO {
     private String title;
 
     //文章作者的ID
+    @JsonFormat(shape = JsonFormat.Shape.STRING)
     private Long authorId;
 
     //点赞数量(好问题)

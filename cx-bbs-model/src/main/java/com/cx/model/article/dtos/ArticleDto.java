@@ -2,6 +2,7 @@ package com.cx.model.article.dtos;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -17,7 +18,8 @@ public class ArticleDto {
     private static final long serialVersionUID = 1L;
 
     @TableId(value = "id", type = IdType.AUTO)
-    private String id;
+    @JsonFormat(shape = JsonFormat.Shape.STRING)
+    private Long id;
 
     @ApiModelProperty("标题")
     private String title;
@@ -83,5 +85,6 @@ public class ArticleDto {
     //内容
     private String content;
     //问题id
-    private String questionId;
+    @JsonFormat(shape = JsonFormat.Shape.STRING)
+    private Long questionId;
 }

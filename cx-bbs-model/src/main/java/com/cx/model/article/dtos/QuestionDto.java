@@ -16,7 +16,7 @@ public class QuestionDto {
     private String content;
 
     //文章作者的ID
-    private Long authorId;
+    private Integer authorId;
 
 
 }
