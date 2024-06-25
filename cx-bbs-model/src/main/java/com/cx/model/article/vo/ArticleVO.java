@@ -16,6 +16,8 @@ import java.util.List;
 public class ArticleVO {
     //id
     private Long id;
+    //作者id
+    private Long authorId;
     //作者
     private UserVO author;
     //内容

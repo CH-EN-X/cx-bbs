@@ -26,7 +26,7 @@ public class QuestionVO {
     private String title;
 
     //文章作者的ID
-    private Integer authorId;
+    private Long authorId;
 
     //点赞数量(好问题)
     private Integer likes;

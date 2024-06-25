@@ -38,7 +38,7 @@ public class Question implements Serializable {
     private String title;
 
     @ApiModelProperty("文章作者的ID")
-    private Integer authorId;
+    private Long authorId;
 
     @ApiModelProperty("点赞数量")
     private Integer likes;

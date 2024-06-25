@@ -17,7 +17,7 @@ public class ArticleDto {
     private static final long serialVersionUID = 1L;
 
     @TableId(value = "id", type = IdType.AUTO)
-    private Long id;
+    private String id;
 
     @ApiModelProperty("标题")
     private String title;
@@ -80,6 +80,8 @@ public class ArticleDto {
     private Byte origin;
 
     private String staticUrl;
-
+    //内容
     private String content;
+    //问题id
+    private String questionId;
 }
