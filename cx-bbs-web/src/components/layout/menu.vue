@@ -1,16 +1,23 @@
 <script setup>
 import { ref } from 'vue'
+import router from "../../router/index.js";
 const useMenus = ref([
   { name: '首页', url: '/index' },
   { name: '知乎知学堂', url: '/education' },
   { name: '发现', url: '/explore' },
   { name: '等你来答', url: '/waiting' }
 ])
+function toIndex(){
+  router.push({
+    name: 'index',
+  })
+}
+
 </script>
 
 <template>
   <el-menu :default-active="$route.path" class="el-menu-demo" mode="horizontal" router>
-    <el-menu-item index="">
+    <el-menu-item index="" @click="toIndex">
       <!-- <img src="/src/assets/image/logo.png" alt="" style="width: 80px"> -->
       <svg width="80" height="40" xmlns="http://www.w3.org/2000/svg">
         <title>晨曦</title>

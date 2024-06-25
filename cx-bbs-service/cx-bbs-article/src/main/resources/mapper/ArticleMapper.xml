@@ -64,5 +64,20 @@
         WHERE
             aa.id = #{id}
     </select>
+    <select id="recommendList" resultType="com.cx.model.article.vo.RecommendVO">
+        SELECT q.id AS question_id, q.title,  a.id AS article_id, a.likes AS likes, ac.content
+        FROM question q
+                 LEFT JOIN article a ON q.id = a.question_id
+                 LEFT JOIN article_content ac ON a.id = ac.article_id
+                 LEFT JOIN (
+            SELECT question_id, MAX(likes) AS max_likes
+            FROM article
+            GROUP BY question_id
+        ) max_likes_tbl ON a.question_id = max_likes_tbl.question_id
+        WHERE a.likes = max_likes_tbl.max_likes
+            LIMIT 5 OFFSET #{dto.page}; -- 第一页
+    </select>
+
+    <!--    <select id="recommendList"-->
 
 </mapper>

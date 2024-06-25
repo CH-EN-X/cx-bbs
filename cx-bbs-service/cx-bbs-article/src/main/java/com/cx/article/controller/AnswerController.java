@@ -7,6 +7,7 @@ import com.cx.article.service.ArticleService;
 import com.cx.article.service.CommentService;
 import com.cx.article.service.QuestionsService;
 import com.cx.feign.client.UserClient;
+import com.cx.model.article.dtos.AnswerDto;
 import com.cx.model.article.pojos.Article;
 import com.cx.model.article.pojos.ArticleContent;
 import com.cx.model.article.pojos.Comment;
@@ -50,7 +51,7 @@ public class AnswerController {
     private UserClient userClient;
 
     @RequestMapping("/details/{id}")
-    public ResponseResult<AnswersVO> details(@PathVariable("id") Long id){
+    public ResponseResult<AnswersVO> details(@PathVariable("id") String id){
         //将问题数据封装vo (先通过关联的id查询)
         Question question = questionService.getById(id);
         //使用封装的数据类型转换器 将Entity转为VO
@@ -66,10 +67,11 @@ public class AnswerController {
         for (ArticleVO vo : articleVOList){
 //            User u = userService.getById(vo.getAuthorId());
 //            UserVO articleAuthor = ConvertUtil.entityToVo(u, UserVO.class);
+            UserVO u = userClient.getUser(String.valueOf(question.getAuthorId())).getData();
             ArticleContent content = contentService.getOne(new LambdaQueryWrapper<ArticleContent>().eq(ArticleContent::getArticleId, vo.getId()));
             List<Comment> comments = commentService.list(new LambdaQueryWrapper<Comment>().eq(Comment::getArticleId, vo.getId()));
             List<CommentVO> articleComments = ConvertUtil.entityToVoList(comments, CommentVO.class);
-//            vo.setAuthor(articleAuthor);
+            vo.setAuthor(u);
             vo.setContent(content.getContent());
             vo.setComments(articleComments);
         }
@@ -89,6 +91,9 @@ public class AnswerController {
         return ResponseResult.okResult(answers);
     }
 
-
+    @RequestMapping("/publish")
+    public ResponseResult publish(@RequestBody AnswerDto dto){
+        return articleService.publish(dto);
+    }
 
 }

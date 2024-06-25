@@ -77,17 +77,40 @@ const favourQuestion = () => {
   }
 };
 
+
+// const data = ref({
+//   authorId: '',
+//   authorName: '',
+//   images: '',
+//   questionId: '',
+//   content: '',
+// })
+
 //提交输入内容
 const textEditor: any = ref(null);
-const submit = () => {
+function submit  ()  {
   // topstorylist.value.content = textEditor.value.valueHtml
   // textEditor.value.submit();
+  const data = ({
+    authorId:localStorage.getItem("id"),
+    authorName:localStorage.getItem("name"),
+    images:localStorage.getItem("image"),
+    questionId:detailsData.question.id,
+    content:textEditor.value.valueHtml
+  });
   console.log(textEditor.value.valueHtml)
-  axios.post("", {}).then(response => {
-
+  console.log(data)
+  axios.post("http://localhost:51802/api/answers/publish",data
+      ).then(response => {
+        if (response.data.code === 200)
+          ElMessage.success("回答成功");
+        else
+          ElMessage.error(response.data.message);
   })
 
 }
+
+
 
 const route = useRoute();
 const id = ref(null);
@@ -99,7 +122,12 @@ function load() {
     // 处理登录成功的逻辑
     if (response.data.code === 200) {
       const newData = response.data.data;
-      Object.assign(detailsData, newData);
+      detailsData.question = newData.question
+      detailsData.author = newData.author
+      detailsData.articles = newData.articles
+      detailsData.comments = newData.comments
+
+      // Object.assign(detailsData, newData);
       console.log(detailsData);
       // const {
       //   question: question1,
@@ -366,20 +394,20 @@ load()
           </div>
           <div style="width: 70%; margin-left: 29px;">
             <!--            <img style="display: inline-block;" :src="userData.img">-->
-<!--            <el-avatar :fit="fill" :size="100" :src="detailsData.articles[0].author.img" shape="square"/>-->
-                        <el-avatar :fit="fill" :size="100" :src="userData.img" shape="square"/>
+            <!--            <el-avatar :fit="fill" :size="100" :src="detailsData.articles[0].author.img" shape="square"/>-->
+            <el-avatar :fit="fill" :size="100" :src="userData.img" shape="square"/>
           </div>
           <div>
-<!--            <p>{{ detailsData.articles[0].author.name }}</p>-->
+            <!--            <p>{{ detailsData.articles[0].author.name }}</p>-->
             <p>{{ userData.name }}</p>
           </div>
-<!--          <el-button v-if="!detailsData.articles[0].author.follow" type="primary"-->
-<!--                     @click="detailsData.articles[0].author.follow=true">关注ta-->
-<!--          </el-button>-->
-<!--          <el-button v-else @click="detailsData.articles[0].author.follow=false">已关注</el-button>-->
-              <el-button type="primary"
-                        >关注ta
-              </el-button>
+          <!--          <el-button v-if="!detailsData.articles[0].author.follow" type="primary"-->
+          <!--                     @click="detailsData.articles[0].author.follow=true">关注ta-->
+          <!--          </el-button>-->
+          <!--          <el-button v-else @click="detailsData.articles[0].author.follow=false">已关注</el-button>-->
+          <el-button type="primary"
+          >关注ta
+          </el-button>
           <el-button>私信ta</el-button>
         </div>
 

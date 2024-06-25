@@ -1,17 +1,23 @@
 package com.cx.article.service.impl;
 
 import com.alibaba.cloud.commons.lang.StringUtils;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.cx.article.mapper.ArticleContentMapper;
 import com.cx.article.mapper.ArticleMapper;
 import com.cx.article.mapper.QuestionMapper;
 import com.cx.article.service.ArticleService;
 import com.cx.common.constants.ArticleConstants;
+import com.cx.model.article.dtos.AnswerDto;
 import com.cx.model.article.dtos.ArticleDto;
+import com.cx.model.article.dtos.RecommendDto;
 import com.cx.model.article.pojos.Article;
 import com.cx.model.article.dtos.ArticleHomeDto;
+import com.cx.model.article.pojos.ArticleContent;
 import com.cx.model.article.pojos.Question;
+import com.cx.model.article.vo.RecommendVO;
 import com.cx.model.common.dtos.ResponseResult;
+import com.cx.utils.common.ConvertUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,6 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @Transactional
@@ -65,7 +72,30 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
         return responseResult;
     }
 
-//    @Override
+    @Override
+    public ResponseResult<RecommendVO> recommendList(RecommendDto dto) {
+        List<RecommendVO> list = articleMapper.recommendList(dto);
+        ResponseResult<RecommendVO> result = ResponseResult.okResult(list);
+        return result;
+    }
+
+    @Override
+    public ResponseResult publish(AnswerDto dto) {
+        Article article = new Article();
+        article.setAuthorId(dto.getAuthorId());
+        article.setAuthorName(dto.getAuthorName());
+        article.setImages(dto.getImages());
+        article.setQuestionId(Long.valueOf(dto.getQuestionId()));
+        articleMapper.insert(article);
+
+        ArticleContent articleContent = new ArticleContent();
+        articleContent.setContent(dto.getContent());
+        articleContent.setArticleId(article.getId());
+        articleContentMapper.insert(articleContent);
+        return ResponseResult.okResult(null);
+    }
+
+
 //    public ResponseResult loadContent(Integer id) {
 //        //查询到提问
 //        Questions questions = questionMapper.selectById(id);
