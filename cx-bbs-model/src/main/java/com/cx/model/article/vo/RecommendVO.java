@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class RecommendVO {
     @JsonFormat(shape = JsonFormat.Shape.STRING)
-    Long QuestionId;
+    Long questionId;
 
     String title;
     String articleId;

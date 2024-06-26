@@ -10,3 +10,6 @@ spring:
       config:
         server-addr: 121.40.128.97:8848
         file-extension: yml
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl

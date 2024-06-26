@@ -6,6 +6,9 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * <p>
@@ -15,6 +18,9 @@ import io.swagger.annotations.ApiModelProperty;
  * @author cx
  * @since 2024-06-23
  */
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 @ApiModel(value = "Comment对象", description = "")
 public class Comment implements Serializable {
 
@@ -22,7 +28,7 @@ public class Comment implements Serializable {
 
     @ApiModelProperty("评论id")
     @TableId(value = "id", type = IdType.AUTO)
-    private Long id;
+    private Integer id;
 
     @ApiModelProperty("0问题的  1回答的")
     private Byte type;
@@ -37,65 +43,7 @@ public class Comment implements Serializable {
     private LocalDateTime publishedTime;
 
     @ApiModelProperty("发布评论的人id")
-    private Long userId;
+    private Integer userId;
 
-    public Long getId() {
-        return id;
-    }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Byte getType() {
-        return type;
-    }
-
-    public void setType(Byte type) {
-        this.type = type;
-    }
-
-    public Long getArticleId() {
-        return articleId;
-    }
-
-    public void setArticleId(Long articleId) {
-        this.articleId = articleId;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
-
-    public LocalDateTime getPublishedTime() {
-        return publishedTime;
-    }
-
-    public void setPublishedTime(LocalDateTime publishedTime) {
-        this.publishedTime = publishedTime;
-    }
-
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
-
-    @Override
-    public String toString() {
-        return "Comment{" +
-            "id = " + id +
-            ", type = " + type +
-            ", articleId = " + articleId +
-            ", content = " + content +
-            ", publishedTime = " + publishedTime +
-            ", userId = " + userId +
-        "}";
-    }
 }

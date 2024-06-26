@@ -19,7 +19,7 @@ import java.time.LocalDateTime;
 public class CommentVO {
     //评论id
     @JsonFormat(shape = JsonFormat.Shape.STRING)
-    private Long id;
+    private Integer id;
 
 //    //0问题的评论  1回答的评论
 //    private Byte type;
