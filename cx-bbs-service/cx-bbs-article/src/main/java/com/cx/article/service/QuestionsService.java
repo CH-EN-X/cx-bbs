@@ -1,9 +1,11 @@
 package com.cx.article.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.cx.model.article.dtos.AnswerDto;
 import com.cx.model.article.dtos.QuestionDto;
 import com.cx.model.article.pojos.Question;
 import com.cx.model.common.dtos.ResponseResult;
+import org.springframework.web.bind.annotation.RequestBody;
 
 /**
  * <p>
@@ -18,4 +20,6 @@ public interface QuestionsService extends IService<Question> {
     ResponseResult add(QuestionDto questionDto);
 
     ResponseResult waiting();
+
+    ResponseResult write(AnswerDto dto);
 }

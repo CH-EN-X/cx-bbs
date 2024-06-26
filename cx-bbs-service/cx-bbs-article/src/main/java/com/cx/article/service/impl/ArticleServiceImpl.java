@@ -85,7 +85,7 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
         article.setAuthorId(dto.getAuthorId());
         article.setAuthorName(dto.getAuthorName());
         article.setImages(dto.getImages());
-        article.setQuestionId(Long.valueOf(dto.getQuestionId()));
+        article.setQuestionId(dto.getQuestionId());
         articleMapper.insert(article);
 
         ArticleContent articleContent = new ArticleContent();
@@ -95,18 +95,5 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
         return ResponseResult.okResult(null);
     }
 
-
-//    public ResponseResult loadContent(Integer id) {
-//        //查询到提问
-//        Questions questions = questionMapper.selectById(id);
-//        //查询该问题下的所有回答 , 条件构造器QueryWrapper构建条件查询
-//        QueryWrapper<Article> queryWrapper = new QueryWrapper<>();
-//        queryWrapper.eq("question_id", questionId); // 添加查询条件：question_id = questionId
-//        List<Article> articleList = articleMapper.selectList(queryWrapper);
-//        //内容
-//
-//        ArticleContent articleContent = articleContentMapper.selectById(id);
-//        return null;
-//    }
 
 }

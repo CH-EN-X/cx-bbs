@@ -1,17 +1,26 @@
 <script lang="ts" setup xmlns="">
 import TextEditor from "../common/TextEditor.vue"
-import {defineProps, onBeforeMount, reactive, ref} from 'vue';
-import {useRoute} from 'vue-router'
+import {defineProps, onBeforeMount, onMounted, reactive, ref} from 'vue';
+import {useRoute, useRouter} from 'vue-router'
 import {ElMessage} from "element-plus";
 import axios from "axios";
 
 const props = defineProps(['id']);
 
-onBeforeMount(() => {
-  console.log('ID:', route.params.id);
-});
 
 const showAnswer = ref(true);
+onBeforeMount(() => {
+  console.log('ID:', route.params.id);
+  console.log('sign:', route.query);
+  // if ()
+
+});
+onMounted(()=>{
+  // if (route.params.sign === "true"){
+  //   showAnswer.value = false
+  // }
+})
+
 
 const toAnswer = () => {
   showAnswer.value = !showAnswer.value;
@@ -68,7 +77,7 @@ let detailsData = reactive({
 
 //点击好问题改变样式
 const favourQuestion = () => {
-  if (document.getElementById('likeButton').style.color != "blue") {
+  if (document.getElementById('likeButton').style.color !== "blue") {
     document.getElementById('likeButton').style.color = 'blue';
     question.likes++;
   } else {
@@ -78,13 +87,6 @@ const favourQuestion = () => {
 };
 
 
-// const data = ref({
-//   authorId: '',
-//   authorName: '',
-//   images: '',
-//   questionId: '',
-//   content: '',
-// })
 
 //提交输入内容
 const textEditor: any = ref(null);
@@ -111,11 +113,23 @@ function submit  ()  {
 }
 
 
-
+// 获取当前路由对象和路由实例
 const route = useRoute();
+const router = useRouter()
+
+// 在路由进入前判断来源页面并设置 showAnswer
+router.beforeEach((to, from, next) => {
+  const isComingFromWaiting = from.name === 'waiting';
+
+
+    showAnswer.value = false;
+
+
+  next();
+});
+
+
 const id = ref(null);
-
-
 function load() {
   const id = route.params.id;
   axios.post("http://localhost:51802/api/answers/details/" + id).then(response => {
@@ -127,15 +141,7 @@ function load() {
       detailsData.articles = newData.articles
       detailsData.comments = newData.comments
 
-      // Object.assign(detailsData, newData);
       console.log(detailsData);
-      // const {
-      //   question: question1,
-      //   detailsData: articles1,
-      //   author: author,
-      //   comments: comments
-      // } = response.data.data;
-      // question = question1;
 
     } else {
       ElMessage.error(response.data.message);
@@ -145,6 +151,7 @@ function load() {
 
 //加载页面调用
 load()
+defineExpose({showAnswer})
 </script>
 
 <template>

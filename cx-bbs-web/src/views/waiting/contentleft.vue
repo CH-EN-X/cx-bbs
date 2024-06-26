@@ -1,7 +1,8 @@
 <script setup>
 import {ref} from 'vue'
 import axios from "axios";
-import {ElMessage} from "element-plus";
+import {ElLoading, ElMessage} from "element-plus";
+import router from "../../router/index.js";
 
 const questions = ref([
   {
@@ -26,6 +27,27 @@ const questions = ref([
   }
 ])
 
+let loadingInstance;
+const startLoading = () => {
+  loadingInstance = ElLoading.service({lock: true, text: '加载中……', background: 'rgba(0, 0, 0, 0.7)'});
+};
+const endLoading = () => {
+  loadingInstance.close();
+};
+function goDetails(id){
+  const sign="waiting"
+  router.push({
+    name: 'details',
+    params: {
+      id: id,
+      sign: id
+    }
+  });
+  sessionStorage.setItem("sign","waiting")
+  // startLoading()
+  // endLoading()
+}
+
 function load(){
   axios.get("http://localhost:51802/api/question/waiting").then(response=>{
     if (response.data.code === 200){
@@ -41,13 +63,12 @@ load()
 <template>
   <div class="content-left">
     <div class="card">
-
       <div id="waiting" class="Topstory-content" style="display: block;">
         <ul>
           <!--      :key=v.id点击获取id-->
           <li v-for="(v,index) in questions" :key="v.id" style="padding-bottom: 20px;padding-top: 20px;">
-            <!--            <div @click="goDetails(v.questionId)">-->
-            <div>
+            <div @click="goDetails(v.id)">
+<!--            <div>-->
               <div class="topstory-hd">
                 <!-- <img :src="v.img" alt=""> -->
                 <span>{{ v.name }}</span>

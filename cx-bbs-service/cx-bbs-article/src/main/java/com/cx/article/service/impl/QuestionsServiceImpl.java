@@ -3,11 +3,14 @@ package com.cx.article.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.cx.article.mapper.QuestionsMapper;
+import com.cx.article.service.ArticleService;
 import com.cx.article.service.QuestionsService;
+import com.cx.model.article.dtos.AnswerDto;
 import com.cx.model.article.dtos.QuestionDto;
 import com.cx.model.article.pojos.Question;
 import com.cx.model.common.dtos.ResponseResult;
 import com.cx.utils.common.ConvertUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import sun.tools.asm.Cover;
 
@@ -27,6 +30,9 @@ public class QuestionsServiceImpl extends ServiceImpl<QuestionsMapper, Question>
     @Resource
     QuestionsMapper questionsMapper;
 
+    @Resource
+    private ArticleService articleService;
+
     @Override
     public ResponseResult add(QuestionDto questionDto) {
         if (questionDto.getTitle() == null || questionDto.getTitle().equals("")) {
@@ -40,5 +46,10 @@ public class QuestionsServiceImpl extends ServiceImpl<QuestionsMapper, Question>
     @Override
     public ResponseResult waiting() {
         return ResponseResult.okResult(questionsMapper.waiting());
+    }
+
+    @Override
+    public ResponseResult write(AnswerDto dto) {
+        return articleService.publish(dto);
     }
 }
