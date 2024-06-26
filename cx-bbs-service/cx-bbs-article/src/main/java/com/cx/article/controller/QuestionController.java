@@ -22,12 +22,14 @@ public class QuestionController {
     @Autowired
     private QuestionsService questionService;
 
-
-
     @PostMapping("/add")
     public ResponseResult add(@RequestBody QuestionDto questionDto){
         return questionService.add(questionDto);
     }
 
+    @GetMapping("/waiting")
+    public ResponseResult waiting(){
+        return questionService.waiting();
+    }
 
 }

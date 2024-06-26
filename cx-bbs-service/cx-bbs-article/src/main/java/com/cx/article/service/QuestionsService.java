@@ -16,4 +16,6 @@ import com.cx.model.common.dtos.ResponseResult;
 public interface QuestionsService extends IService<Question> {
 
     ResponseResult add(QuestionDto questionDto);
+
+    ResponseResult waiting();
 }

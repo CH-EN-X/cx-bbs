@@ -28,6 +28,7 @@
         <result column="content" property="content"/>
         <result column="question_id" property="questionId"/>
     </resultMap>
+
     <select id="loadArticleList" resultMap="resultMap">
         SELECT
         aa.*,
@@ -54,6 +55,7 @@
         order by aa.publish_time desc
         limit #{dto.size}
     </select>
+
     <select id="detail" resultType="com.cx.model.article.dtos.ArticleDto">
         SELECT
             aa.*,
@@ -64,6 +66,7 @@
         WHERE
             aa.id = #{id}
     </select>
+
     <select id="recommendList" resultType="com.cx.model.article.vo.RecommendVO">
         SELECT q.id AS question_id, q.title,  a.id AS article_id, a.likes AS likes, ac.content
         FROM question q
@@ -78,6 +81,8 @@
             LIMIT 5 OFFSET #{dto.page}; -- 第一页
     </select>
 
-    <!--    <select id="recommendList"-->
+
+
+
 
 </mapper>

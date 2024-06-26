@@ -36,4 +36,9 @@ public class QuestionsServiceImpl extends ServiceImpl<QuestionsMapper, Question>
         questionsMapper.insert(question);
         return ResponseResult.okResult(200,"发布成功");
     }
+
+    @Override
+    public ResponseResult waiting() {
+        return ResponseResult.okResult(questionsMapper.waiting());
+    }
 }

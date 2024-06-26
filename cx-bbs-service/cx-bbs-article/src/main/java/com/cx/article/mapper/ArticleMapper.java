@@ -5,6 +5,7 @@ import com.cx.model.article.dtos.ArticleDto;
 import com.cx.model.article.dtos.RecommendDto;
 import com.cx.model.article.pojos.Article;
 import com.cx.model.article.dtos.ArticleHomeDto;
+import com.cx.model.article.vo.QuestionVO;
 import com.cx.model.article.vo.RecommendVO;
 import org.apache.ibatis.annotations.MapKey;
 import org.apache.ibatis.annotations.Mapper;
@@ -21,6 +22,8 @@ public interface ArticleMapper extends BaseMapper<Article> {
     ArticleDto detail(@Param("id") Integer id);
 
     List<RecommendVO> recommendList(@Param("dto") RecommendDto dto);
+
+
 
 
 //        public List<Map<String,Object>> loadArticleList(@Param("dto") ArticleHomeDto dto, @Param("type") Short type);

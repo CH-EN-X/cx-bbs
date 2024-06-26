@@ -2,6 +2,9 @@ package com.cx.article.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.cx.model.article.pojos.Question;
+import com.cx.model.article.vo.QuestionVO;
+
+import java.util.List;
 
 /**
  * <p>
@@ -12,5 +15,7 @@ import com.cx.model.article.pojos.Question;
  * @since 2024-06-08
  */
 public interface QuestionsMapper extends BaseMapper<Question> {
+
+    List<QuestionVO> waiting();
 
 }

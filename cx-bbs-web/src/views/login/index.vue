@@ -56,6 +56,9 @@ function login () {
       // 处理登录成功的逻辑
       if (response.data.code === 200) {
         ElMessage.success("登录成功")
+        localStorage.setItem("id",response.data.data.user.id)
+        localStorage.setItem("name",response.data.data.user.name)
+        localStorage.setItem("image",response.data.data.user.image)
         toIndex();
       } else {
         ElMessage.error(response.data.message);
@@ -68,54 +71,6 @@ function login () {
 }
 
 </script>
-
-<!--<script>-->
-<!--import axios from 'axios';-->
-<!--import { ref, reactive } from 'vue'-->
-<!--import { useRouter } from 'vue-router'-->
-<!--const router = useRouter();-->
-<!--export default {-->
-<!--  name: 'MyComponent',-->
-<!--  data () {-->
-<!--    return {-->
-<!--      form: {-->
-<!--        phone: '',-->
-<!--        password: '',-->
-<!--      }-->
-<!--    }-->
-<!--  },-->
-<!--  methods: {-->
-
-<!--    login () {-->
-<!--      this.$nextTick(() => {-->
-<!--        console.log('Phone:', this.form.phone.valueOf);-->
-<!--        console.log('Password:', this.form.password);-->
-<!--        // 在这里可以使用 this.form.phone 和 this.form.password 获取输入框的值-->
-<!--      });-->
-<!--      axios.post("http://localhost:51801/api/v1/login/login_auth", { phone: this.form.phone, password: this.form.password })-->
-<!--        .then(response => {-->
-<!--          const router = useRouter();-->
-<!--          console.log(response.data.message);-->
-<!--          // 处理登录成功的逻辑-->
-<!--          router.push('/index')-->
-<!--        })-->
-<!--      // .catch(error => {-->
-<!--      //   console.error(error.response.data.message);-->
-<!--      //   // 处理登录失败的逻辑-->
-<!--      // });-->
-
-<!--    }, fetchData () {-->
-<!--      axios.get('https://jsonplaceholder.typicode.com/posts')-->
-<!--        .then(response => {-->
-<!--          console.log(response.data);-->
-<!--        })-->
-<!--        .catch(error => {-->
-<!--          console.log(error);-->
-<!--        });-->
-<!--    },-->
-<!--  }-->
-<!--};-->
-<!--</script> &ndash;&gt;-->
 
 
 <template>
