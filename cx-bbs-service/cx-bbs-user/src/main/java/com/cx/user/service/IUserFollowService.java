@@ -2,7 +2,9 @@ package com.cx.user.service;
 
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.cx.model.common.dtos.ResponseResult;
 import com.cx.model.user.UserFollow;
+import com.cx.model.user.dtos.FollowDto;
 
 /**
  * <p>
@@ -14,4 +16,5 @@ import com.cx.model.user.UserFollow;
  */
 public interface IUserFollowService extends IService<UserFollow> {
 
+    ResponseResult follow(FollowDto dto);
 }

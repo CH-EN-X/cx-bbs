@@ -29,7 +29,8 @@ const toAnswer = () => {
 
 const dialogVisible = ref(false);
 
-const userData = reactive({
+const userData = ref({
+  id: 2002102014,
   name: '喵先生',
   age: 25,
   img: '/src/assets/image/1.png',
@@ -117,16 +118,27 @@ function submit  ()  {
 const route = useRoute();
 const router = useRouter()
 
-// 在路由进入前判断来源页面并设置 showAnswer
-router.beforeEach((to, from, next) => {
-  const isComingFromWaiting = from.name === 'waiting';
+// // 在路由进入前判断来源页面并设置 showAnswer
+// router.beforeEach((to, from, next) => {
+//   const isComingFromWaiting = from.name === 'waiting';
+//
+//     showAnswer.value = false;
+//
+//   next();
+// });
 
-
-    showAnswer.value = false;
-
-
-  next();
-});
+function follow(id){
+  axios.post("http://localhost:51801/api/follow/toFollow",{
+    userId:localStorage.getItem("id")
+    followId:id
+  }).then(response => {
+    if (response.data.code === 200){
+      ElMessage.success("关注成功");
+    }else {
+      //
+    }
+  })
+}
 
 
 const id = ref(null);
@@ -140,6 +152,9 @@ function load() {
       detailsData.author = newData.author
       detailsData.articles = newData.articles
       detailsData.comments = newData.comments
+
+      //热度最高的作者展示在侧边栏
+      userData.value =newData.articles[0].author
 
       console.log(detailsData);
 
@@ -325,9 +340,9 @@ defineExpose({showAnswer})
         <!--内容-->
         <div style="padding-left: 33px;padding-right: 33px;line-height: 24px;background: white;padding-top: 22px;">
           <div style="display: flex; align-items: center;margin-bottom: 13px;">
-            <el-avatar :fit="fill" :size="45" :src="userData.img" shape="square"/>
+            <el-avatar :fit="fill" :size="45" :src="userData.value.img" shape="square"/>
             <span style="display: flex; align-items: center;margin-left: 11px;">
-              {{ userData.name }}
+              {{ userData.value.name }}
             </span>
           </div>
           <div>
@@ -402,17 +417,17 @@ defineExpose({showAnswer})
           <div style="width: 70%; margin-left: 29px;">
             <!--            <img style="display: inline-block;" :src="userData.img">-->
             <!--            <el-avatar :fit="fill" :size="100" :src="detailsData.articles[0].author.img" shape="square"/>-->
-            <el-avatar :fit="fill" :size="100" :src="userData.img" shape="square"/>
+            <el-avatar :fit="fill" :size="100" :src="userData.value.img" shape="square"/>
           </div>
           <div>
             <!--            <p>{{ detailsData.articles[0].author.name }}</p>-->
-            <p>{{ userData.name }}</p>
+            <p>{{ userData.value.name }}</p>
           </div>
           <!--          <el-button v-if="!detailsData.articles[0].author.follow" type="primary"-->
           <!--                     @click="detailsData.articles[0].author.follow=true">关注ta-->
           <!--          </el-button>-->
           <!--          <el-button v-else @click="detailsData.articles[0].author.follow=false">已关注</el-button>-->
-          <el-button type="primary"
+          <el-button type="primary" @click="follow(userData.value.id)"
           >关注ta
           </el-button>
           <el-button>私信ta</el-button>
