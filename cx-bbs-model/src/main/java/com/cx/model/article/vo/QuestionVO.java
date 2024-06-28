@@ -29,8 +29,8 @@ public class QuestionVO {
     private String title;
 
     //文章作者的ID
-    @JsonFormat(shape = JsonFormat.Shape.STRING)
-    private Long authorId;
+//    @JsonFormat(shape = JsonFormat.Shape.STRING)
+    private Integer authorId;
 
     //点赞数量(好问题)
     private Integer likes;

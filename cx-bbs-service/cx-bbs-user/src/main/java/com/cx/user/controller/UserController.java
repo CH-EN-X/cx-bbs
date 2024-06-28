@@ -34,11 +34,11 @@ public class UserController {
     private IUserService userService;
 
     @GetMapping("/{id}")
-    public ResponseResult<UserVO> getUser(@PathVariable("id") String id) {
+    public ResponseResult<UserVO> getUser(@PathVariable("id") Integer id) {
         User user = userService.getById(id);
-        //TODO:防止空指针
+        //防止空指针
         if (user == null){
-            return null;
+            return ResponseResult.okResult(null);
         }
         UserVO userVO = UserVO.builder()
                 .id(user.getId())

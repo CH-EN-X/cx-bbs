@@ -10,5 +10,5 @@ import org.springframework.web.bind.annotation.PathVariable;
 @FeignClient(name = "cx-bbs-user") // 指定要调用的服务名
 public interface UserClient {
     @GetMapping("/api/user/{id}") // 远程调用的接口地址
-    ResponseResult<UserVO> getUser(@PathVariable("id") String id); // 定义对应的方法，用于远程调用获取用户信息
+    ResponseResult<UserVO> getUser(@PathVariable("id") Integer id); // 定义对应的方法，用于远程调用获取用户信息
 }

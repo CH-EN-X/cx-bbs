@@ -25,6 +25,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 
 @CrossOrigin
@@ -57,23 +58,29 @@ public class AnswerController {
         //使用封装的数据类型转换器 将Entity转为VO
         QuestionVO questionVO = ConvertUtil.entityToVo(question, QuestionVO.class);
 
-        //将用户数据封装vo (先通过关联的id查询)
-        UserVO userVO = userClient.getUser(String.valueOf(question.getAuthorId())).getData();//userService.getById( question.getAuthorId() );
+        //避免空指针
+        UserVO userVO = new UserVO();
+        if (question.getAuthorId()!=null){
+            //将用户数据封装vo (先通过关联的id查询)
+            userVO = userClient.getUser(question.getAuthorId()).getData();//userService.getById( question.getAuthorId() );
+        }
+
 
         //将回答数据封装vo (先通过关联的id查询)
         List<Article> articles = articleService.list(new LambdaQueryWrapper<Article>().eq(Article::getQuestionId, question.getId()));
-        //将 List<Entity> 转换为List<Vo>
-        List<ArticleVO> articleVOList = ConvertUtil.entityToVoList(articles, ArticleVO.class);
-        for (ArticleVO vo : articleVOList){
-//            User u = userService.getById(vo.getAuthorId());
-//            UserVO articleAuthor = ConvertUtil.entityToVo(u, UserVO.class);
-            UserVO u = userClient.getUser(String.valueOf(question.getAuthorId())).getData();
-            ArticleContent content = contentService.getOne(new LambdaQueryWrapper<ArticleContent>().eq(ArticleContent::getArticleId, vo.getId()));
-            List<Comment> comments = commentService.list(new LambdaQueryWrapper<Comment>().eq(Comment::getArticleId, vo.getId()));
-            List<CommentVO> articleComments = ConvertUtil.entityToVoList(comments, CommentVO.class);
-            vo.setAuthor(u);
-            vo.setContent(content.getContent());
-            vo.setComments(articleComments);
+        List<ArticleVO> articleVOList =new ArrayList<ArticleVO>();
+        if (articles.size() != 0){
+            //将 List<Entity> 转换为List<Vo>
+            articleVOList = ConvertUtil.entityToVoList(articles, ArticleVO.class);
+            for (ArticleVO vo : articleVOList){
+                UserVO u = userClient.getUser(question.getAuthorId()).getData();
+                ArticleContent content = contentService.getOne(new LambdaQueryWrapper<ArticleContent>().eq(ArticleContent::getArticleId, vo.getId()));
+                List<Comment> comments = commentService.list(new LambdaQueryWrapper<Comment>().eq(Comment::getArticleId, vo.getId()));
+                List<CommentVO> articleComments = ConvertUtil.entityToVoList(comments, CommentVO.class);
+                vo.setAuthor(u);
+                vo.setContent(content.getContent());
+                vo.setComments(articleComments);
+            }
         }
 
         //将评论数据封装vo (先通过关联的id查询)
