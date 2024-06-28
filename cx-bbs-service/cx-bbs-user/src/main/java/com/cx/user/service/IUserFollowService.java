@@ -17,4 +17,6 @@ import com.cx.model.user.dtos.FollowDto;
 public interface IUserFollowService extends IService<UserFollow> {
 
     ResponseResult follow(FollowDto dto);
+
+    ResponseResult unFollow(FollowDto dto);
 }
