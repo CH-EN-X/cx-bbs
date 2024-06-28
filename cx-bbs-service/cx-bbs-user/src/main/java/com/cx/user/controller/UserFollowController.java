@@ -28,4 +28,9 @@ public class UserFollowController {
     public ResponseResult unFollow(@RequestBody FollowDto dto){
         return userFollowService.unFollow(dto);
     }
+
+    @RequestMapping("/ifFollow")
+    public ResponseResult ifFollow(@RequestBody FollowDto dto){
+        return userFollowService.ifFollow(dto);
+    }
 }

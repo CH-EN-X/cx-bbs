@@ -26,7 +26,7 @@ const toAnswer = () => {
   showAnswer.value = !showAnswer.value;
 };
 
-let isFollowed: boolean = ref(false)
+let isFollowed = ref(false)
 const dialogVisible = ref(false);
 const commentDialog = ref(false)
 // 定义 replyText 数据
@@ -137,7 +137,7 @@ function comment(){
 
 
 function follow(id){
-  if (!isFollowed){
+  if (!isFollowed.value){
     //未关注
     axios.post("http://localhost:51801/api/follow/toFollow",{
       userId:localStorage.getItem("id"),
@@ -145,10 +145,10 @@ function follow(id){
     }).then(response => {
       if (response.data.code === 200){
         ElMessage.success(response.data.message);
-        isFollowed = true
+        isFollowed.value = true
       }else {
         ElMessage.warning(response.data.message);
-        isFollowed = true
+        // isFollowed.value = true
       }
     })
   }else {
@@ -158,8 +158,8 @@ function follow(id){
       followId:id
     }).then(response => {
       if (response.data.code === 200){
-        ElMessage.success("取消关注");
-        isFollowed = false;
+        ElMessage.success(response.data.message);
+        isFollowed.value = false;
       }else {
         ElMessage.error(response.data.message)
       }
@@ -168,14 +168,13 @@ function follow(id){
 
 }
 
-
 const id = ref(null);
 function load() {
   const id = route.params.id;
   axios.post("http://localhost:51802/api/answers/details/" + id).then(response => {
     // 处理登录成功的逻辑
+    const newData = response.data.data;
     if (response.data.code === 200) {
-      const newData = response.data.data;
       detailsData.question = newData.question
       detailsData.author = newData.author
       detailsData.articles = newData.articles
@@ -191,7 +190,21 @@ function load() {
     } else {
       ElMessage.error(response.data.message);
     }
-  })
+
+    if(localStorage.getItem("id")!='' && detailsData.articles.length != 0){
+      axios.post("http://localhost:51801/api/follow/ifFollow",{
+        userId:localStorage.getItem("id"),
+        followId:newData.articles[0].author.id
+      }).then(response => {
+        if (response.data.code === 200){
+          isFollowed.value = true
+        }
+      })
+    }
+  });
+  console.log(detailsData)
+
+
 }
 
 //加载页面调用
@@ -311,7 +324,7 @@ defineExpose({showAnswer})
                 <div class="QuestionHeader-Comment">
                   <button
                       class="Button FEfUrdfMIKpQDJDqkjte Button--plain Button--withIcon Button--withLabel fEPKGkUK5jyc4fUuT0QP B46v1Ak6Gj5sL2JTS4PY RuuQ6TOh2cRzJr6WlyQp"
-                      type="button" @click="commentDialog">
+                      type="button" @click="commentDialog = true">
                   <span style="display: inline-flex; align-items: center;">​<svg
                       class="Zi Zi--Comment Button-zi t2ntD6J1DemdOdvh5FB4" fill="currentColor"
                       height="1.2em"
@@ -407,11 +420,11 @@ defineExpose({showAnswer})
                 <i class="iconfont icon-xiangxia2"></i>
               </el-button>
             </li>
-            <li>
-              <i class="iconfont icon-xiaoxi" @click="commentDialog = true"></i>
-              <span>{{ article.comments.length }}条评伦</span>
+            <li @click="commentDialog = true">
+              <i class="iconfont icon-xiaoxi" ></i>
+              <span>{{ article.comments.length }}条评论</span>
             </li>
-            <li>
+              <li>
               <i class="iconfont icon-fenxiang"></i>
               <span>分享</span>
             </li>
@@ -475,7 +488,7 @@ defineExpose({showAnswer})
       width="700"
       :close-on-click-modal="false">
     <!--        给dialog加上点击空白处不关闭的属性-->
-    <Component/>
+    <Component />
     <template #footer>
       <el-input v-model="replyText" placeholder="回复..." style="width: 90%"/>
       <el-button>发送</el-button>

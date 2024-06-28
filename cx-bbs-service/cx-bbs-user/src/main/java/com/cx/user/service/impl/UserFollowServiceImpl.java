@@ -38,7 +38,7 @@ public class UserFollowServiceImpl extends ServiceImpl<UserFollowMapper, UserFol
                 .eq(UserFollow::getUserId, dto.getUserId())
                 .eq(UserFollow::getFollowId, dto.getFollowId());
         List<UserFollow> userFollowList = userFollowMapper.selectList(queryWrapper);
-        if (userFollowList != null || !userFollowList.isEmpty()) {
+        if (userFollowList.size() > 0) {
             return ResponseResult.errorResult(501,"您已经关注过他了");
         }
 
@@ -63,4 +63,19 @@ public class UserFollowServiceImpl extends ServiceImpl<UserFollowMapper, UserFol
         }
         return ResponseResult.okResult(200,"你还没有关注");
     }
+
+    @Override
+    public ResponseResult ifFollow(FollowDto dto) {
+        //判断是否已关注
+        LambdaQueryWrapper<UserFollow> queryWrapper = Wrappers.<UserFollow>lambdaQuery()
+                .eq(UserFollow::getUserId, dto.getUserId())
+                .eq(UserFollow::getFollowId, dto.getFollowId());
+        List<UserFollow> userFollowList = userFollowMapper.selectList(queryWrapper);
+        if (userFollowList.size() > 0) {
+            return ResponseResult.errorResult(200,"您已经关注过他了");
+        }
+        return ResponseResult.okResult(501,"未关注");
+    }
+
+
 }

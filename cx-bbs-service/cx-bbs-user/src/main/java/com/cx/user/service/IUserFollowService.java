@@ -19,4 +19,6 @@ public interface IUserFollowService extends IService<UserFollow> {
     ResponseResult follow(FollowDto dto);
 
     ResponseResult unFollow(FollowDto dto);
+
+    ResponseResult ifFollow(FollowDto dto);
 }
