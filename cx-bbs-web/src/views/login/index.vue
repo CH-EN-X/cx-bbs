@@ -119,7 +119,7 @@ function login () {
                 </ul>
               </div>
             </el-tab-pane>
-            <el-tab-pane label="注册" name="second" @click="reg">
+            <el-tab-pane label="注册" name="second" >
               <el-input v-model="form.input3" placeholder="请输入用户名" />
 <!--              <el-input v-model="form.input3" placeholder="请输入邮箱号" />-->
               <div class="code-btn">
@@ -127,7 +127,7 @@ function login () {
                 <el-link type="primary">获取验证码</el-link>
               </div>
               <el-input v-model="form.input5" type="password" placeholder="请输入密码" />
-              <el-button type="primary" @click="onSubmit">注册</el-button>
+              <el-button type="primary" @click="reg">注册</el-button>
               <p class="agreement">注册即代表同意用户协议</p>
             </el-tab-pane>
           </el-tabs>
