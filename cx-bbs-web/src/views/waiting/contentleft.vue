@@ -27,6 +27,14 @@ const questions = ref([
   }
 ])
 
+// function toLogin () {
+//   if (localStorage.getItem("id")===null){
+//     router.push({
+//       name: 'login'})
+//     ElMessage.warning("请先登录")
+//   }
+// }
+
 let loadingInstance;
 const startLoading = () => {
   loadingInstance = ElLoading.service({lock: true, text: '加载中……', background: 'rgba(0, 0, 0, 0.7)'});
@@ -35,15 +43,21 @@ const endLoading = () => {
   loadingInstance.close();
 };
 function goDetails(id){
-  const sign="waiting"
+  if (localStorage.getItem("id")===null){
+    router.push({
+      name: 'login'})
+    ElMessage.warning("请先登录")
+    return;
+  }
+  // const sign="waiting"
   router.push({
     name: 'details',
     params: {
       id: id,
-      sign: id
+      // sign: id
     }
   });
-  sessionStorage.setItem("sign","waiting")
+  // sessionStorage.setItem("sign","waiting")
   // startLoading()
   // endLoading()
 }
