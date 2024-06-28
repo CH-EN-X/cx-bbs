@@ -4,9 +4,9 @@ import {defineProps, onBeforeMount, onMounted, reactive, ref} from 'vue';
 import {useRoute, useRouter} from 'vue-router'
 import {ElMessage} from "element-plus";
 import axios from "axios";
+import Component from "../common/Comment.vue"
 
 const props = defineProps(['id']);
-
 
 const showAnswer = ref(true);
 onBeforeMount(() => {
@@ -28,6 +28,9 @@ const toAnswer = () => {
 
 let isFollowed: boolean = ref(false)
 const dialogVisible = ref(false);
+const commentDialog = ref(false)
+// 定义 replyText 数据
+const replyText = ref('');
 
 let userData = reactive({
   id: 2002102014,
@@ -125,6 +128,10 @@ function toLogin () {
     ElMessage.warning("请先登录")
   }
 
+
+}
+
+function comment(){
 
 }
 
@@ -304,7 +311,7 @@ defineExpose({showAnswer})
                 <div class="QuestionHeader-Comment">
                   <button
                       class="Button FEfUrdfMIKpQDJDqkjte Button--plain Button--withIcon Button--withLabel fEPKGkUK5jyc4fUuT0QP B46v1Ak6Gj5sL2JTS4PY RuuQ6TOh2cRzJr6WlyQp"
-                      type="button">
+                      type="button" @click="commentDialog">
                   <span style="display: inline-flex; align-items: center;">​<svg
                       class="Zi Zi--Comment Button-zi t2ntD6J1DemdOdvh5FB4" fill="currentColor"
                       height="1.2em"
@@ -401,7 +408,7 @@ defineExpose({showAnswer})
               </el-button>
             </li>
             <li>
-              <i class="iconfont icon-xiaoxi"></i>
+              <i class="iconfont icon-xiaoxi" @click="commentDialog = true"></i>
               <span>{{ article.comments.length }}条评伦</span>
             </li>
             <li>
@@ -461,21 +468,32 @@ defineExpose({showAnswer})
 
   </div>
 
-
-  <!--  <el-button @click="submit2">submit2</el-button>-->
-
-  <!-- 对话框  -->
-  <el-dialog v-model="dialogVisible" :before-close="handleClose" title="添加收藏" width="30%">
-    <span>你可以创建多个收藏夹，将答案分类收藏</span>
+<!--  commentDialog-->
+  <el-dialog
+      v-model="commentDialog"
+      title="评论"
+      width="700"
+      :close-on-click-modal="false">
+    <!--        给dialog加上点击空白处不关闭的属性-->
+    <Component/>
     <template #footer>
-        <span class="dialog-footer">
-          <el-button @click="dialogVisible = false">取消</el-button>
-          <el-button type="primary" @click="dialogVisible = false">
-            收藏
-          </el-button>
-        </span>
+      <el-input v-model="replyText" placeholder="回复..." style="width: 90%"/>
+      <el-button>发送</el-button>
     </template>
   </el-dialog>
+
+  <!-- 对话框  -->
+<!--  <el-dialog v-model="dialogVisible" :before-close="handleClose" title="添加收藏" width="30%">-->
+<!--    <span>你可以创建多个收藏夹，将答案分类收藏</span>-->
+<!--    <template #footer>-->
+<!--        <span class="dialog-footer">-->
+<!--          <el-button @click="dialogVisible = false">取消</el-button>-->
+<!--          <el-button type="primary" @click="dialogVisible = false">-->
+<!--            收藏-->
+<!--          </el-button>-->
+<!--        </span>-->
+<!--    </template>-->
+<!--  </el-dialog>-->
 </template>
 
 <style scoped>

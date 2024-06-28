@@ -42,8 +42,8 @@
           v-model="askDialog"
           title="提问"
           width="500"
-          :before-close="handleClose"
-      >
+          :close-on-click-modal="false">
+<!--        给dialog加上点击空白处不关闭的属性-->
         <el-form :model="form" label-width="auto" style="max-width: 600px">
           <el-form-item >
             <el-input v-model="form.title" placeholder="写下你的问题" />

@@ -11,8 +11,10 @@
   "dependencies": {
     "@wangeditor/editor": "^5.1.23",
     "@wangeditor/editor-for-vue": "^5.1.12",
+    "ant-design-vue": "^4.2.3",
     "axios": "^1.7.2",
     "element-plus": "^2.7.5",
+    "undraw-ui": "^1.1.4",
     "vue": "^3.2.47",
     "vue-router": "^4.2.1",
     "vue3-count-to": "^1.1.2",
@@ -21,7 +23,7 @@
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^4.1.0",
-    "unplugin-vue-components": "^0.25.1",
+    "unplugin-vue-components": "^0.25.2",
     "vite": "^4.3.2"
   }
 }

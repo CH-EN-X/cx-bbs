@@ -7,11 +7,12 @@ import './assets/css/index.css'
 import './assets/font/iconfont.css'
 import './assets/font/iconfont.js'
 import './assets/css/details.css'
+import 'ant-design-vue/dist/reset.css';
 
-
-
+import { DatePicker } from 'ant-design-vue';
+const app = createApp(App)
+app.use(DatePicker);
 createApp(App).use(router).mount('#app')
-
 // import { createPinia } from 'pinia';
 // import * as Elicons from '@element-plus/icons-vue';
 
