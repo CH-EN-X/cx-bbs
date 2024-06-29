@@ -73,7 +73,7 @@ public class AnswerController {
             //将 List<Entity> 转换为List<Vo>
             articleVOList = ConvertUtil.entityToVoList(articles, ArticleVO.class);
             for (ArticleVO vo : articleVOList){
-                UserVO u = userClient.getUser(question.getAuthorId()).getData();
+                UserVO u = userClient.getUser(vo.getAuthorId()).getData();
                 ArticleContent content = contentService.getOne(new LambdaQueryWrapper<ArticleContent>().eq(ArticleContent::getArticleId, vo.getId()));
                 List<Comment> comments = commentService.list(new LambdaQueryWrapper<Comment>().eq(Comment::getArticleId, vo.getId()));
                 List<CommentVO> articleComments = ConvertUtil.entityToVoList(comments, CommentVO.class);
