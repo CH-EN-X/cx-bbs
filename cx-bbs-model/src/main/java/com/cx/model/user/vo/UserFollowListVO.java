@@ -5,9 +5,12 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-//@Data
-//@NoArgsConstructor
-//@AllArgsConstructor
-//public class FollowVO {
-//
-//}
+import java.util.List;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class UserFollowListVO {
+    private List<UserVO> users;
+
+}

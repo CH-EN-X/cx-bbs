@@ -2,15 +2,17 @@ package com.cx.user.service.impl;
 
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.cx.model.article.pojos.ArticleContent;
 import com.cx.model.common.dtos.ResponseResult;
+import com.cx.model.user.User;
 import com.cx.model.user.UserFollow;
 import com.cx.model.user.dtos.FollowDto;
+import com.cx.model.user.vo.UserVO;
 import com.cx.user.mapper.UserFollowMapper;
+import com.cx.user.mapper.UserMapper;
 import com.cx.user.service.IUserFollowService;
+import com.cx.utils.common.ConvertUtil;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -30,6 +32,9 @@ public class UserFollowServiceImpl extends ServiceImpl<UserFollowMapper, UserFol
 
     @Resource
     private UserFollowMapper userFollowMapper;
+
+    @Resource
+    private UserMapper userMapper;
 
     @Override
     public ResponseResult follow(FollowDto dto) {
@@ -75,6 +80,25 @@ public class UserFollowServiceImpl extends ServiceImpl<UserFollowMapper, UserFol
             return ResponseResult.errorResult(200,"您已经关注过他了");
         }
         return ResponseResult.okResult(501,"未关注");
+    }
+
+    @Override
+    public ResponseResult<List<UserVO>> followList(Integer id) {
+        LambdaQueryWrapper<UserFollow> wrapper = Wrappers.lambdaQuery();
+        wrapper.eq(UserFollow::getUserId, id);
+
+        List<UserFollow> userFollowList = userFollowMapper.selectList(wrapper);
+
+        List<Integer> followIds = userFollowList.stream()
+                .map(UserFollow::getFollowId)
+                .collect(Collectors.toList());
+
+        LambdaQueryWrapper<User> userWrapper = Wrappers.lambdaQuery();
+        userWrapper.in(User::getId, followIds);
+
+        List<UserVO> userVOS = ConvertUtil.entityToVoList(userMapper.selectList(userWrapper), UserVO.class);
+
+        return ResponseResult.okResult(userVOS);
     }
 
 

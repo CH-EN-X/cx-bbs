@@ -5,6 +5,9 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.cx.model.common.dtos.ResponseResult;
 import com.cx.model.user.UserFollow;
 import com.cx.model.user.dtos.FollowDto;
+import com.cx.model.user.vo.UserVO;
+
+import java.util.List;
 
 /**
  * <p>
@@ -21,4 +24,6 @@ public interface IUserFollowService extends IService<UserFollow> {
     ResponseResult unFollow(FollowDto dto);
 
     ResponseResult ifFollow(FollowDto dto);
+
+    ResponseResult<List<UserVO>> followList(Integer id);
 }

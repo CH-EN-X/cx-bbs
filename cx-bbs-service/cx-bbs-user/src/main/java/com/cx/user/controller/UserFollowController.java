@@ -1,15 +1,15 @@
 package com.cx.user.controller;
 
 import com.cx.model.common.dtos.ResponseResult;
+import com.cx.model.user.UserFollow;
 import com.cx.model.user.dtos.FollowDto;
+import com.cx.model.user.vo.UserVO;
 import com.cx.user.service.IUserFollowService;
 import io.swagger.annotations.Api;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/follow")
@@ -32,5 +32,10 @@ public class UserFollowController {
     @RequestMapping("/ifFollow")
     public ResponseResult ifFollow(@RequestBody FollowDto dto){
         return userFollowService.ifFollow(dto);
+    }
+
+    @RequestMapping("/followList/{id}")
+    public ResponseResult<List<UserVO>> followList(@PathVariable("id") Integer id){
+        return userFollowService.followList(id);
     }
 }
