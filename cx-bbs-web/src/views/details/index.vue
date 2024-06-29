@@ -1,6 +1,6 @@
 <script lang="ts" setup xmlns="">
 import TextEditor from "../common/TextEditor.vue"
-import {defineProps, onBeforeMount, onMounted, reactive, ref} from 'vue';
+import {defineProps, inject, onBeforeMount, onMounted, reactive, ref} from 'vue';
 import {useRoute, useRouter} from 'vue-router'
 import {ElMessage} from "element-plus";
 import axios from "axios";
@@ -131,8 +131,25 @@ function toLogin () {
 
 }
 
-function comment(){
+// const loadComments = ref<any>();
+// const getFileRef = () => {
+//   loadComments.value.loadComments();
+// };
 
+const toCommentId = ref(666)
+function openComment(id){
+  toCommentId.value = id
+  // getFileRef()
+  commentDialog.value = true
+  console.log(id)
+  console.log(toCommentId.value)
+
+}
+
+
+
+function sendComment(){
+  ElMessage.info()
 }
 
 
@@ -209,7 +226,10 @@ function load() {
 
 //加载页面调用
 load()
-defineExpose({showAnswer})
+// defineExpose({
+//   valueHtml,
+//   submit
+// });
 </script>
 
 <template>
@@ -324,7 +344,7 @@ defineExpose({showAnswer})
                 <div class="QuestionHeader-Comment">
                   <button
                       class="Button FEfUrdfMIKpQDJDqkjte Button--plain Button--withIcon Button--withLabel fEPKGkUK5jyc4fUuT0QP B46v1Ak6Gj5sL2JTS4PY RuuQ6TOh2cRzJr6WlyQp"
-                      type="button" @click="commentDialog = true">
+                      type="button" @click="openComment(detailsData.question.id)">
                   <span style="display: inline-flex; align-items: center;">​<svg
                       class="Zi Zi--Comment Button-zi t2ntD6J1DemdOdvh5FB4" fill="currentColor"
                       height="1.2em"
@@ -420,7 +440,7 @@ defineExpose({showAnswer})
                 <i class="iconfont icon-xiangxia2"></i>
               </el-button>
             </li>
-            <li @click="commentDialog = true">
+            <li @click="openComment(article.id)">
               <i class="iconfont icon-xiaoxi" ></i>
               <span>{{ article.comments.length }}条评论</span>
             </li>
@@ -486,9 +506,10 @@ defineExpose({showAnswer})
       v-model="commentDialog"
       title="评论"
       width="700"
+      ref="loadComments"
       :close-on-click-modal="false">
     <!--        给dialog加上点击空白处不关闭的属性-->
-    <Component />
+    <Component  :toCommentId="toCommentId" />
     <template #footer>
       <el-input v-model="replyText" placeholder="回复..." style="width: 90%"/>
       <el-button>发送</el-button>

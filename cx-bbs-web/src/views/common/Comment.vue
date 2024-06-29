@@ -1,27 +1,35 @@
 <script setup>
-import { ref } from 'vue';
+import {provide, ref} from 'vue';
 import {reactive} from "vue";
+import axios from "axios";
 
-const comments = reactive([
+let comments = reactive([
   {
-    author: "柏小陌",
-    avatarSrc: "https://s2.loli.net/2024/06/25/71qVLWasyFZckpX.png",
-    altText: "Han Solo",
+
+    user:{
+      name: "柏小陌",
+      image: "https://s2.loli.net/2024/06/25/71qVLWasyFZckpX.png",
+      altText: "Han Solo",
+    },
     content: "碎前上周生产，碎后商周生产。",
     comments: [
       {
-        author: "百福生",
-        avatarSrc: "https://s2.loli.net/2024/06/25/71qVLWasyFZckpX.png",
-        altText: "Han Solo",
+        user:{
+          name: "百福生",
+          image: "https://s2.loli.net/2024/06/25/71qVLWasyFZckpX.png",
+          altText: "Han Solo",
+        },
         content: "关键是真有百分之一碎片是商周文物，至于其他碎片按照商周文物估价"
       },
 
     ]
   },
   {
-    author: "冰二锅",
-    avatarSrc: "https://s2.loli.net/2024/06/25/71qVLWasyFZckpX.png",
-    altText: "Han Solo",
+    user:{
+      name: "冰二锅",
+      image: "https://s2.loli.net/2024/06/25/71qVLWasyFZckpX.png",
+      altText: "Han Solo",
+    },
     content: "要是真是稀罕货，不会这样堆在这",
     comments: [
     ]
@@ -31,8 +39,6 @@ const comments = reactive([
 
 // 定义 replyText 数据
 const replyText = ref('');
-
-
 
 const replyingComment = ref('');
 
@@ -50,6 +56,22 @@ const toggleReply = (comment) => {
     replyText.value = ''; // 或者在回复时设置默认内容
   }
 };
+
+const props = defineProps({
+  toCommentId: String
+})
+function loadComments(){
+  // const id = route.params.id;
+  console.log("pros: "+props.toCommentId)
+  axios.post("http://localhost:51802/api/comment/load",{
+    articleId:props.toCommentId
+  }).then(response=>{
+    if (response.data.code === 200){
+      comments = response.data.data
+      console.log(comments)
+    }
+  })
+}
 
 // 假设的发送评论方法
 const sendReply = (comment) => {
@@ -71,12 +93,19 @@ const sendReply = (comment) => {
   replyText.value = '';
   toggleReply(comment);
 };
+
+defineExpose({
+  loadComments
+});
+provide('loadComments', loadComments);
+
+loadComments()
 </script>
 
 
 <template>
   <div>
-    <a-comment v-for="comment in comments" :key="comment.author">
+    <a-comment v-for="comment in comments" :key="comment.user.name">
       <template #actions>
         <!--        <span key="comment-nested-reply-to" @click="">回复</span>-->
         <span v-if="!isReplying(comment)" key="comment-nested-reply-to" @click="toggleReply(comment)">回复</span>
@@ -89,10 +118,10 @@ const sendReply = (comment) => {
 
       </template>
       <template #author>
-        <a>{{ comment.author }}</a>
+        <a>{{ comment.user.name }}</a>
       </template>
       <template #avatar>
-        <a-avatar :src="comment.avatarSrc" :alt="comment.altText" />
+        <a-avatar :src="comment.user.image" :alt="comment.user.altText" />
       </template>
       <template #content>
         <p>{{ comment.content }}</p>
@@ -109,10 +138,10 @@ const sendReply = (comment) => {
                         @keyup.enter="sendReply(nestedComment)"/>
             </template>
             <template #author>
-              <a>{{ nestedComment.author }}</a>
+              <a>{{ nestedComment.user.name }}</a>
             </template>
             <template #avatar>
-              <a-avatar :src="nestedComment.avatarSrc" :alt="nestedComment.altText" />
+              <a-avatar :src="nestedComment.user.image" :alt="nestedComment.user.altText" />
             </template>
             <template #content>
               <p>{{ nestedComment.content }}</p>

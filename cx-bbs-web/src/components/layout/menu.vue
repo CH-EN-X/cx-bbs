@@ -4,7 +4,7 @@ import router from "../../router/index.js";
 const useMenus = ref([
   { name: '首页', url: '/index' },
   // { name: '知乎知学堂', url: '/education' },
-  { name: '发现', url: '/explore' },
+  // { name: '发现', url: '/explore' },
   { name: '等你来答', url: '/waiting' }
 ])
 function toIndex(){

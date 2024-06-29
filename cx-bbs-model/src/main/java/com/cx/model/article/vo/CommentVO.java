@@ -11,6 +11,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @Builder
@@ -33,6 +34,11 @@ public class CommentVO {
     //发布时间
     private LocalDateTime publishedTime;
 
+    private Integer userId;
+
     //发布评论的人
     private UserVO user;
+
+    //子评论
+    private List<CommentVO> comments;
 }
