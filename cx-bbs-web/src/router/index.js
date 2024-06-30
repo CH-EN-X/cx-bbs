@@ -62,6 +62,11 @@ const routes =[
                 path:'/details/:id',   //详情页
                 name:'details',
                 component:()=>import('../views/details/index.vue')
+            },
+            {
+                path:'/user', //个人信息
+                name:'user',
+                component:()=>import('../views/user/index.vue')
             }
         ]
     },

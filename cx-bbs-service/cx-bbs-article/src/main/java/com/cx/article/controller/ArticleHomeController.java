@@ -27,6 +27,12 @@ public class ArticleHomeController {
         return articleService.load(ArticleConstants.LOADTYPE_LOAD_MORE,dto);
     }
 
+    @PostMapping("/interest/{id}")
+    public ResponseResult<RecommendVO> interest(@PathVariable("id") Integer id){
+        return articleService.interest(id);
+    }
+
+
     @PostMapping("/loadmore")
     public ResponseResult loadMore(@RequestBody ArticleHomeDto dto) {
         return articleService.load(ArticleConstants.LOADTYPE_LOAD_MORE,dto);
@@ -41,6 +47,8 @@ public class ArticleHomeController {
     public ResponseResult<RecommendVO> recommendList(@RequestBody RecommendDto dto){
         return articleService.recommendList(dto);
     }
+
+
 
 //    @PostMapping("/content")
 //    public ResponseResult loadContent(@PathParam("id") Integer id) {

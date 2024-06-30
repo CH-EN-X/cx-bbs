@@ -17,6 +17,7 @@ public class RecommendVO {
     String title;
     String articleId;
     Integer likes;
+    //第一篇回答内容
     String content;
 
 }

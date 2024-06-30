@@ -22,6 +22,8 @@ public interface ArticleService extends IService<Article> {
 
     ResponseResult publish(AnswerDto dto);
 
+    ResponseResult<RecommendVO> interest(Integer id);
+
 
 //    ResponseResult loadContent(Integer id);
 

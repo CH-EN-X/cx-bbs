@@ -23,7 +23,7 @@ public interface ArticleMapper extends BaseMapper<Article> {
 
     List<RecommendVO> recommendList(@Param("dto") RecommendDto dto);
 
-
+    List<RecommendVO> interestedList(@Param("id") Integer id);
 
 
 //        public List<Map<String,Object>> loadArticleList(@Param("dto") ArticleHomeDto dto, @Param("type") Short type);

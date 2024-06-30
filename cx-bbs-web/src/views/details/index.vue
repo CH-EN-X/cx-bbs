@@ -403,7 +403,7 @@ load()
         <!--内容-->
         <div style="padding-left: 33px;padding-right: 33px;line-height: 24px;background: white;padding-top: 22px;">
           <div style="display: flex; align-items: center;margin-bottom: 13px;">
-            <el-avatar :fit="fill" :size="45" src="https://s2.loli.net/2024/06/19/x5cn4iCVIS2HlyQ.png" shape="square"/>
+            <el-avatar :fit="fill" :size="45" :src="userData.image" shape="square"/>
             <span style="display: flex; align-items: center;margin-left: 11px;">
               {{ userData.name }}
             </span>
@@ -480,7 +480,7 @@ load()
           <div style="width: 70%; margin-left: 29px;">
             <!--            <img style="display: inline-block;" :src="userData.img">-->
             <!--            <el-avatar :fit="fill" :size="100" :src="detailsData.articles[0].author.img" shape="square"/>-->
-            <el-avatar :fit="fill" :size="100" :src="userData.img" shape="square"/>
+            <el-avatar :fit="fill" :size="100" :src="userData.image" shape="square"/>
           </div>
           <div>
             <!--            <p>{{ detailsData.articles[0].author.name }}</p>-->

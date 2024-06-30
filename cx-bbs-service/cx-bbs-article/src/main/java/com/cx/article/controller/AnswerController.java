@@ -17,7 +17,6 @@ import com.cx.model.article.vo.ArticleVO;
 import com.cx.model.article.vo.CommentVO;
 import com.cx.model.article.vo.QuestionVO;
 import com.cx.model.common.dtos.ResponseResult;
-import com.cx.model.user.User;
 import com.cx.model.user.vo.UserVO;
 import com.cx.user.service.IUserService;
 import com.cx.utils.common.ConvertUtil;
