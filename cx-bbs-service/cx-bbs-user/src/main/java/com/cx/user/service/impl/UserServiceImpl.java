@@ -1,8 +1,11 @@
 package com.cx.user.service.impl;
 
 import com.alibaba.cloud.commons.lang.StringUtils;
+import com.aliyuncs.dysmsapi.model.v20170525.SendSmsResponse;
+import com.aliyuncs.exceptions.ClientException;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.cx.common.aliyun.util.AliyunSmsUtil;
 import com.cx.model.common.dtos.ResponseResult;
 import com.cx.model.common.enums.HttpCodeEnum;
 import com.cx.model.user.User;
@@ -80,6 +83,19 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         if(userMapper.selectOne(Wrappers.<User>lambdaQuery().eq(User::getPhone, loginDto.getPhone())) != null){
             return ResponseResult.errorResult(400,"用户已存在");
         }
+        //调用阿里云短信服务
+        AliyunSmsUtil.setNewcode();
+        String code = Integer.toString(AliyunSmsUtil.getNewcode());
+        if (!code.equals(loginDto.getCode()) || loginDto.getCode() ==null || loginDto.getCode().equals("")){
+            return ResponseResult.errorResult(2,"验证码错误");
+        }
+        //发短信
+        try {
+            SendSmsResponse response =AliyunSmsUtil.sendSms("13397356781",code);
+        } catch (ClientException e) {
+            throw new RuntimeException(e);
+        }
+
         User user = new User();
         String salt = "abc";
         user.setSalt(salt);

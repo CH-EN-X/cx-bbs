@@ -4,4 +4,6 @@ org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
   com.cx.common.swagger.Swagger2Configuration,\
   com.cx.common.aliyun.GreenTextScan,\
   com.cx.common.aliyun.GreenImageScan,\
+  com.cx.common.aliyun.util.AliyunSmsUtil,\
   com.cx.common.qiniu.util.QiniuOssUtil
+  
