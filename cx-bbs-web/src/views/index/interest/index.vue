@@ -7,32 +7,9 @@ import axios  from "axios";
 const topstorylist = ref([
   {
     user:{
-      img: '/src/assets/image/pic5.png',
-      name: '喵先生',
-      title: '标题一',
-    },
-    questions:[{
-      content: '请之旅吧，那叫一个坎坷呀，可以拍请之旅吧，那叫一个坎坷呀，可以拍请之旅吧，那叫一个坎坷呀，可以拍请之旅吧，那叫一个坎坷呀，可以拍请之旅吧，那叫一个坎坷呀，可以拍请之旅吧，那叫一个坎坷呀，可以拍请之旅吧，那叫一个坎坷呀，可以拍请之旅吧，那叫一个坎坷呀。',
-      id: 1,
-      favour:false,
-      disfavour:false,
-      likes: 88,
-      like: false,
-    },
-      {
-        articleitem: '请之旅吧，那叫一个坎坷呀，可以拍请之旅吧，那叫一个坎坷呀，可以拍请之旅吧，那叫一个坎坷呀，可以拍请之旅吧，那叫一个坎坷呀，可以拍请之旅吧，那叫一个坎坷呀，可以拍请之旅吧，那叫一个坎坷呀，可以拍请之旅吧，那叫一个坎坷呀，可以拍请之旅吧，那叫一个坎坷呀。',
-        id: 1,
-        favour:false,
-        disfavour:false,
-        likes: 88,
-        like: false,
-      }]
-  },
-  {
-    user:{
-      img: '/src/assets/image/pic5.png',
-      name: '喵先生',
-      title: '标题一',
+      img: '',
+      name: '',
+      title: '',
     },
     questions:[]
   }
@@ -74,7 +51,7 @@ loadFollow()
 
 <template>
   <div class="Topstory-content">
-    <ul v-for="u in topstorylist">
+    <ul v-for="u in topstorylist" >
 <!--      <li v-for="v in u.questions" :key="v.id">-->
       <li v-for="v in u.questions" >
         <div @click="goDetails(v.questionId)">

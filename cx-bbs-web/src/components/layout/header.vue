@@ -27,10 +27,10 @@
             </div>
             <div class="header-profile">
                   <el-dropdown>
-                        <img src="@/assets/image/1.png" alt="">
+                        <img :src="user.image" alt="">
                         <template #dropdown>
                         <el-dropdown-menu>
-                            <el-dropdown-item><i class="iconfont icon-gerenzhongxin"></i>个人中心</el-dropdown-item>
+                            <el-dropdown-item @click="$router.push('/user')"><i class="iconfont icon-gerenzhongxin"></i>个人中心</el-dropdown-item>
                             <el-dropdown-item @click="$router.push('/login')"><i class="iconfont icon-tuichu"></i>退出</el-dropdown-item>
                         </el-dropdown-menu>
                         </template>
@@ -84,6 +84,12 @@ const form = ref({
   content: '',
 })
 
+const user = ref({
+  id:'',
+  name:'',
+  image:'',
+})
+
 const askDialog = ref(false)
 
 const onSubmit = () => {
@@ -113,6 +119,14 @@ const handleClose = (done: () => void) => {
 
 const router = useRouter();
 
+function load()  {
+  axios.get("http://localhost:51801/api/user/"+localStorage.getItem("id")).then(res=>{
+    if (res.data.code === 200){
+      user.value = res.data.data;
+    }
+  })
+}
+load()
 </script>
 
 

@@ -14,4 +14,5 @@ import com.cx.model.user.User;
  */
 public interface UserMapper extends BaseMapper<User> {
 
+    void updateInfo(User user);
 }

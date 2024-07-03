@@ -124,8 +124,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
             }
             user.setPassword(MD5Utils.encode(newPwd+salt));
 
-        }else{
-            return ResponseResult.errorResult(2,"密码不能为空");
         }
         userMapper.updateInfo(user);
         return ResponseResult.okResult(200,"修改成功");

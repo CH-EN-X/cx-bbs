@@ -16,6 +16,8 @@ public class UserVO {
     //id
     private Integer id;
     //用户名
+    private String phone;
+    //昵称
     private String name;
     //头像
     private String image;
