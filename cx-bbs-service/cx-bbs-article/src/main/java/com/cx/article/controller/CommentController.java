@@ -24,4 +24,9 @@ public class CommentController {
         return commentService.commentList(dto);
     }
 
+    @RequestMapping("sendComment")
+    public ResponseResult sendComment(@RequestBody Comment comment){
+        return commentService.sendComment(comment);
+    }
+
 }

@@ -11,6 +11,7 @@ import com.cx.model.article.dtos.CommentDto;
 import com.cx.model.article.pojos.Comment;
 import com.cx.model.article.vo.CommentVO;
 import com.cx.model.common.dtos.ResponseResult;
+import com.cx.model.common.enums.HttpCodeEnum;
 import com.cx.model.user.vo.UserVO;
 import com.cx.utils.common.ConvertUtil;
 import org.springframework.stereotype.Service;
@@ -46,7 +47,33 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
         for (CommentVO commentVO : commentVOList) {
             UserVO user = userClient.getUser(commentVO.getUserId()).getData();
             commentVO.setUser(user);
+
+            //查询子评论
+            List<CommentVO> commentChildren = ConvertUtil.entityToVoList(
+                    commentMapper.selectList(
+                            Wrappers.<Comment>lambdaQuery()
+                                    .eq(Comment::getArticleId, commentVO.getId())
+                    ),
+                    CommentVO.class);
+            for (CommentVO commentChild : commentChildren) {
+                UserVO user2 = userClient.getUser(commentChild.getUserId()).getData();
+                commentChild.setUser(user2);
+            }
+            commentVO.setComments(commentChildren);
         }
         return ResponseResult.okResult(commentVOList);
+    }
+
+    @Override
+    public ResponseResult sendComment(Comment comment) {
+        if (comment.getFlag() == 0){
+            commentMapper.insert(comment);
+        } else if (comment.getFlag() == 1) {
+            commentMapper.insert(comment);
+        }else {
+            return ResponseResult.errorResult(HttpCodeEnum.SERVER_ERROR);
+        }
+
+        return null;
     }
 }

@@ -17,4 +17,6 @@ import com.cx.model.common.dtos.ResponseResult;
 public interface CommentService extends IService<Comment> {
 
     ResponseResult commentList(CommentDto dto);
+
+    ResponseResult sendComment(Comment comment);
 }
