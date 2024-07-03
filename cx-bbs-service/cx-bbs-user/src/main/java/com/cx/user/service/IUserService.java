@@ -22,4 +22,7 @@ public interface IUserService extends IService<User> {
 
     ResponseResult<User> reg(LoginDto loginDto);
 
+    ResponseResult sendCode();
+
+    ResponseResult updateInfo(User user);
 }

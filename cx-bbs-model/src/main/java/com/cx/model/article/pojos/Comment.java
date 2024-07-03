@@ -45,5 +45,7 @@ public class Comment implements Serializable {
     @ApiModelProperty("发布评论的人id")
     private Integer userId;
 
+    @ApiModelProperty("0评论  1回复")
+    private Byte flag;
 
 }

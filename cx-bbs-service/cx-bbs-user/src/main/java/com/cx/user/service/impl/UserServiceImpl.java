@@ -83,18 +83,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         if(userMapper.selectOne(Wrappers.<User>lambdaQuery().eq(User::getPhone, loginDto.getPhone())) != null){
             return ResponseResult.errorResult(400,"用户已存在");
         }
-        //调用阿里云短信服务
-        AliyunSmsUtil.setNewcode();
-        String code = Integer.toString(AliyunSmsUtil.getNewcode());
-        if (!code.equals(loginDto.getCode()) || loginDto.getCode() ==null || loginDto.getCode().equals("")){
-            return ResponseResult.errorResult(2,"验证码错误");
-        }
-        //发短信
-        try {
-            SendSmsResponse response =AliyunSmsUtil.sendSms("13397356781",code);
-        } catch (ClientException e) {
-            throw new RuntimeException(e);
-        }
 
         User user = new User();
         String salt = "abc";
@@ -104,5 +92,43 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         user.setCreatedTime(LocalDateTime.now());
         userMapper.insert(user);
         return ResponseResult.okResult(200,"注册成功");
+    }
+
+    @Override
+    public ResponseResult sendCode (){
+        //调用阿里云短信服务
+        AliyunSmsUtil.setNewcode();
+        String code = Integer.toString(AliyunSmsUtil.getNewcode());
+        //发短信
+        try {
+            SendSmsResponse response =AliyunSmsUtil.sendSms("13397356781",code);
+        } catch (ClientException e) {
+            throw new RuntimeException(e);
+        }
+        return ResponseResult.okResult(code);
+    }
+
+
+    @Override
+    public ResponseResult updateInfo(User user) {
+        //取出盐值
+        String salt = userMapper.selectById(user.getId()).getSalt();
+        if (user.getPassword() != null && !user.getPassword().equals("")){
+            //我在前端将新旧密码存在同一个字段，再将它在后端分割开来
+            String[] passwordArray = user.getPassword().split(",");
+            String oldPwd = passwordArray[0];
+            String newPwd = passwordArray[1];
+            oldPwd = MD5Utils.encode(oldPwd+salt);
+            if (!userMapper.selectById(user.getId()).getPassword().equals(oldPwd)){
+                return ResponseResult.errorResult(HttpCodeEnum.LOGIN_PASSWORD_ERROR);
+            }
+            user.setPassword(MD5Utils.encode(newPwd+salt));
+
+        }else{
+            return ResponseResult.errorResult(2,"密码不能为空");
+        }
+        userMapper.updateInfo(user);
+        return ResponseResult.okResult(200,"修改成功");
+
     }
 }

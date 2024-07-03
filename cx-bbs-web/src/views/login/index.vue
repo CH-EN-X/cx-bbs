@@ -8,6 +8,7 @@ const form = reactive({
   phone: '',
   password: '',
   input3: '',
+  input4:'',
   input5: '',
 })
 const activeName = ref('first')
@@ -32,7 +33,22 @@ function toIndex () {
   endLoading()
 }
 
+//验证码
+const code = ref()
+function sendCode(){
+  axios.get("http://localhost:51801/api/user/sendCode").then(res=>{
+    if (res.data.code === 200){
+      code.value = res.data.data;
+      console.log(code.value)
+      console.log(res.data.data)
+    }
+  })
+}
+
 function reg () {
+  if (form.input4 !== code.value){
+    return ElMessage.error("验证码错误")
+  }
   axios.post("http://localhost:51801/api/user/reg", { phone: form.input3, password: form.input5 })
       .then(response => {
         const router = useRouter();
@@ -124,7 +140,7 @@ function login () {
 <!--              <el-input v-model="form.input3" placeholder="请输入邮箱号" />-->
               <div class="code-btn">
                 <el-input v-model="form.input4" placeholder="请输入验证码" />
-                <el-link type="primary">获取验证码</el-link>
+                <el-link type="primary" @click="sendCode">获取验证码</el-link>
               </div>
               <el-input v-model="form.input5" type="password" placeholder="请输入密码" />
               <el-button type="primary" @click="reg">注册</el-button>

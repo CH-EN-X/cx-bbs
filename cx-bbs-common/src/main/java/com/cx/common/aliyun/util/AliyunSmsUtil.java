@@ -29,8 +29,8 @@ public class AliyunSmsUtil {
     //产品域名,开发者无需替换
     static final String domain = "dysmsapi.aliyuncs.com";
 
-    private static String accessKeyId;
-    private static String secret;
+    private static String accessKeyId ;
+    private static String secret ;
 
     public static SendSmsResponse sendSms(String telephone, String code) throws ClientException, com.aliyuncs.exceptions.ClientException {
         //可自助调整超时时间

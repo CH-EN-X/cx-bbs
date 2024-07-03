@@ -42,6 +42,7 @@ public class UserController {
         }
         UserVO userVO = UserVO.builder()
                 .id(user.getId())
+                .phone(user.getPhone())
                 .image(user.getImage())
                 .name(user.getName())
                 .sex(user.getSex())
@@ -60,5 +61,17 @@ public class UserController {
     public ResponseResult<User> login(@RequestBody LoginDto loginDto){
         return userService.login(loginDto);
     }
+
+    @GetMapping("/sendCode")
+    public ResponseResult sendCode(){
+        return userService.sendCode();
+    }
+
+    @PostMapping("/update")
+    public ResponseResult updateInfo(@RequestBody User user){
+        return userService.updateInfo(user);
+    }
+
+
 
 }
