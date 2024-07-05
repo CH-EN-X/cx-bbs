@@ -66,6 +66,7 @@ function reg () {
 
 function login () {
 
+
   axios.post("http://localhost:51801/api/user/login/login_auth", { phone: form.phone, password: form.password })
     .then(response => {
       const router = useRouter();
@@ -75,6 +76,8 @@ function login () {
         localStorage.setItem("id",response.data.data.user.id)
         localStorage.setItem("name",response.data.data.user.name)
         localStorage.setItem("image",response.data.data.user.image)
+        // localStorage.setItem('token', response.data.data.token)
+        axios.defaults.headers.common['token'] = response.data.data.token;
         toIndex();
       } else {
         ElMessage.error(response.data.message);

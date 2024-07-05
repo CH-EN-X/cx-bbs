@@ -30,3 +30,9 @@ import 'element-plus/theme-chalk/el-message.css';
 // app.use(pinia);
 // app.mount('#app');
 
+// import axios from './plugins/axios.js';
+//
+// app.config.globalProperties.$http = axios;
+//
+// app.mount('#app');
+
