@@ -1,7 +1,6 @@
 package com.cx.article;
 
 import com.cx.article.ArticleApplication;
-import com.cx.common.aliyun.GreenImageScan;
 import com.cx.common.aliyun.GreenTextScan;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,15 +17,13 @@ public class AliyunTest {
     @Autowired
     private GreenTextScan greenTextScan;
 
-    @Autowired
-    private GreenImageScan greenImageScan;
 
     /**
      * 测试文本内容审核
      */
     @Test
     public void testScanText() throws Exception {
-        Map map = greenTextScan.greeTextScan("123");
+        Map map = greenTextScan.greeTextScan("傻子");
 //        greenTextScan.greeTextScan("我是一个好人");
         if (map.get("labels") == null) {
             System.out.println("测试通过》。。。。。");

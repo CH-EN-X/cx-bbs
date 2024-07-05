@@ -97,6 +97,7 @@ public class AnswerController {
         return ResponseResult.okResult(answers);
     }
 
+    //发布问题
     @RequestMapping("/publish")
     public ResponseResult publish(@RequestBody AnswerDto dto){
         return articleService.publish(dto);

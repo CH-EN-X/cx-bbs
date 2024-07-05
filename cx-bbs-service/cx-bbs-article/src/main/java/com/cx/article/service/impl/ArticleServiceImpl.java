@@ -8,7 +8,9 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.cx.article.mapper.ArticleContentMapper;
 import com.cx.article.mapper.ArticleMapper;
 import com.cx.article.mapper.QuestionMapper;
+import com.cx.article.mapper.SensitiveMapper;
 import com.cx.article.service.ArticleService;
+import com.cx.common.aliyun.GreenTextScan;
 import com.cx.common.constants.ArticleConstants;
 import com.cx.feign.client.UserClient;
 import com.cx.model.article.dtos.AnswerDto;
@@ -18,13 +20,16 @@ import com.cx.model.article.pojos.Article;
 import com.cx.model.article.dtos.ArticleHomeDto;
 import com.cx.model.article.pojos.ArticleContent;
 import com.cx.model.article.pojos.Question;
+import com.cx.model.article.pojos.Sensitive;
 import com.cx.model.article.vo.ArticleVO;
 import com.cx.model.article.vo.FollowVO;
 import com.cx.model.article.vo.RecommendVO;
 import com.cx.model.common.dtos.ResponseResult;
+import com.cx.model.common.enums.HttpCodeEnum;
 import com.cx.model.user.UserFollow;
 import com.cx.model.user.vo.UserVO;
 import com.cx.utils.common.ConvertUtil;
+import com.cx.utils.common.SensitiveWordUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -56,6 +61,9 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
 
     @Resource
     private UserClient userClient;
+
+    @Autowired
+    private GreenTextScan greenTextScan;
 
     /**
      * 根据参数加载文章列表
@@ -93,6 +101,24 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
 
     @Override
     public ResponseResult publish(AnswerDto dto) {
+        //文章内容审核
+        Map map = null;
+        try {
+            map = greenTextScan.greeTextScan(dto.getContent());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        if (map.get("labels") == null) {
+            System.out.println("》》》》》审核通过》》》》》》");
+        }else {
+            return ResponseResult.errorResult(500,"文章内容包含违规信息");
+        }
+        //自管理的敏感词过滤
+        boolean isSensitive = handleSensitiveScan(dto.getContent());
+        if(isSensitive) {
+            return ResponseResult.errorResult(500,"文章内容包含违规信息");
+        }
+
         Article article = new Article();
         article.setAuthorId(dto.getAuthorId());
         article.setAuthorName(dto.getAuthorName());
@@ -128,5 +154,35 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
         return ResponseResult.okResult(followVOList);
     }
 
+    @Autowired
+    private SensitiveMapper sensitiveMapper;
+
+    /**
+     * 自管理的敏感词审核
+     * @param content
+     * @return
+     */
+    private boolean handleSensitiveScan(String content) {
+
+        boolean flag = false;
+
+        //获取所有的敏感词
+//        List<Sensitive> sensitives = sensitiveMapper.selectList(Wrappers.<Sensitive>lambdaQuery().select(Sensitive::getSensitives));
+        // 查询敏感数据并存储在List中
+        List<Sensitive> sensitives = sensitiveMapper.selectSensitives();//sensitiveMapper.selectList(Wrappers.<Sensitive>lambdaQuery().select(Sensitive::getSensitives));
+        List<String> sensitiveList = sensitives.stream().map(Sensitive::getSensitives).collect(Collectors.toList());
+
+        //初始化敏感词库
+        SensitiveWordUtil.initMap(sensitiveList);
+
+        //查看文章中是否包含敏感词
+        Map<String, Integer> map = SensitiveWordUtil.matchWords(content);
+        if(map.size() >0){
+//            updateWmNews(news,(short) 2,"当前文章中存在违规内容"+map);
+            flag = true;
+        }
+
+        return flag;
+    }
 
 }

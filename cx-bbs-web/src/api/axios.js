@@ -57,12 +57,15 @@ const fetch = (url, method, data) => {
         url: baseURL + url,
         params:data,
         data:qs.stringify(data),
-        headers: method=='get'?{
-            "Accept": "application/json",
-            "Content-Type": "application/json; charset=UTF-8"
-        }:{
-            'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+        headers: {
+            'Content-Type': 'application/json'
         }
+        // headers: method==='get'?{
+        //     "Accept": "application/json",
+        //     "Content-Type": "application/json"
+        // }:{
+        //     'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+        // }
     }
 
     if(method =='get'){

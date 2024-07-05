@@ -1,8 +1,8 @@
 <script setup>
 import {ref, onMounted, createVNode, reactive} from 'vue';
 import {useRouter} from 'vue-router'
-// import axios from "axios";
-import axios from "../../../api/axios.js"
+import axios from "axios";
+// import axios from "../../../api/axios.js"
 import {ElLoading, ElMessage} from "element-plus";
 
 const questions = ref([
@@ -42,34 +42,34 @@ function goDetails(v) {
   endLoading()
 }
 
-// axios.interceptors.response.use(
-//     response => {
-//       console.log('拦截器响应成功')
-//       return response
-//     },
-//     error => {
-//       console.log('拦截器响应失败')
-//       console.log(error)
-//       if(error.request){
-//         console.log(error.request)
-//       } else if(error.response){
-//         console.log(error.response.data);
-//         console.log(error.response.status);
-//       }
-//       if (error && error.response) {
-//         switch (error.response.status) {
-//           case 401: error.message = '未授权，请重新登录(401)';
-//             router.push({
-//               name: 'login'
-//             });
-//             break;
-//         }
-//       }else{
-//         error.message ='连接服务器失败!'
-//       }
-//       return Promise.reject(error)
-//     }
-// )
+axios.interceptors.response.use(
+    response => {
+      console.log('拦截器响应成功')
+      return response
+    },
+    error => {
+      console.log('拦截器响应失败')
+      console.log(error)
+      if(error.request){
+        console.log(error.request)
+      } else if(error.response){
+        console.log(error.response.data);
+        console.log(error.response.status);
+      }
+      if (error && error.response) {
+        switch (error.response.status) {
+          case 401: error.message = '未授权，请重新登录(401)';
+            router.push({
+              name: 'login'
+            });
+            break;
+        }
+      }else{
+        error.message ='连接服务器失败!'
+      }
+      return Promise.reject(error)
+    }
+)
 
 
 function load() {
@@ -77,7 +77,8 @@ function load() {
   // const token = localStorage.getItem('token');
   // console.log(token)
 
-  axios.fetchPost("/article/api/article/recommend", {
+  //Nginx+网关 // axios.post("/api/article/api/article/recommend", {
+  axios.post("http://localhost:51802/api/article/recommend", {
     page: 0
   }).then(response => {
     if (response.data.code === 401){
