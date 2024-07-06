@@ -6,9 +6,9 @@ spring:
   cloud:
     nacos:
       discovery:
-        server-addr: 121.40.128.97:8848
+        server-addr: 47.121.140.92:8848
       config:
-        server-addr: 121.40.128.97:8848
+        server-addr: 47.121.140.92:8848
         file-extension: yml
 #    #连接发送者邮箱
 #  mail:
