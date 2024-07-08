@@ -4,27 +4,37 @@
     <div class="appheader">
         <Menu />
         <div class="header-item">
-            <div class="header-search">
-                <input type="text" placeholder="请输入内容">
-                <button class="iconfont icon-sousuo"></button>
+            <div class="header-search" style="margin-left: -124px;margin-right: 45px;  font-size: 13px;">
+                <input type="text" placeholder="请输入内容" v-model="searchText">
+                <button class="iconfont icon-sousuo"
+                @click="toSearch">
+                  <!--                        style="border-bottom-right-radius: 999px;-->
+                  <!--                        border-top-right-radius: 1018px;-->
+                  <!--                        background-color: #409eff;-->
+                  <!--                        font-size: 1.7em;-->
+                  <!--                        padding-left: 2px;-->
+                  <!--                        margin-top: -9px;-->
+                  <!--                        margin-right: -8px;-->
+                  <!--                        cursor: pointer;"-->
+                </button>
             </div>
-            <el-button type="primary" @click="askDialog=true" round>提问</el-button>
+            <el-button type="primary" @click="askDialog=true" round style="margin-left: 32px;margin-right: 26px;">提问</el-button>
         </div>
         <div class="heaer-userinfo">
-            <div class="popover">
-                <i class="iconfont icon-xiaoxizhongxin"></i>
-                <div class="popover-num">10</div>
-                <p>消息</p>
-            </div>
-            <div class="popover">
-                <i class="iconfont icon-xiaoxi1"></i>
-                <div class="popover-num">10</div>
-                <p>私信</p>
-            </div>
-            <div class="popover">
-                <i class="iconfont icon-jurassic_edit-user"></i>
-                <p>创作中心</p>
-            </div>
+<!--            <div class="popover">-->
+<!--                <i class="iconfont icon-xiaoxizhongxin"></i>-->
+<!--                <div class="popover-num">10</div>-->
+<!--                <p>消息</p>-->
+<!--            </div>-->
+<!--            <div class="popover">-->
+<!--                <i class="iconfont icon-xiaoxi1"></i>-->
+<!--                <div class="popover-num">10</div>-->
+<!--                <p>私信</p>-->
+<!--            </div>-->
+<!--            <div class="popover">-->
+<!--                <i class="iconfont icon-jurassic_edit-user"></i>-->
+<!--                <p>创作中心</p>-->
+<!--            </div>-->
             <div class="header-profile">
                   <el-dropdown>
                         <img :src="user.image" alt="">
@@ -90,6 +100,8 @@ const user = ref({
   image:'',
 })
 
+const searchText = ref()
+
 const askDialog = ref(false)
 
 const onSubmit = () => {
@@ -103,6 +115,15 @@ const onSubmit = () => {
       askDialog.value = false;
     } else {
       ElMessage.error(response.data.message);
+    }
+  })
+}
+
+function toSearch(){
+  router.push({
+    name:'search',
+    query: {
+      q: searchText.value
     }
   })
 }

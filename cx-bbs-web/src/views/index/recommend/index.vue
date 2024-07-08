@@ -71,6 +71,16 @@ axios.interceptors.response.use(
     }
 )
 
+// function search(word){
+//   axios.post("http://localhost:51802/api/v1/article/search/search",{
+//     searchWords: word,
+//     "pageNum": 0,
+//     "pageSize": 5
+//   }).then(res=>{
+//
+//   })
+// }
+
 
 function load() {
   // axios.fetchPost("http://localhost:51802/api/article/recommend", {

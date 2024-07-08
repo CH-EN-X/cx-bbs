@@ -6,10 +6,16 @@ spring:
   cloud:
     nacos:
       discovery:
-        server-addr: 121.40.128.97:8848
+        server-addr: 47.121.140.92:8848
       config:
-        server-addr: 121.40.128.97:8848
+        server-addr: 47.121.140.92:8848
         file-extension: yml
+  autoconfigure:
+    exclude: org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
 mybatis-plus:
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+elasticsearch:
+  host: 127.0.0.1
+  port: 9200
