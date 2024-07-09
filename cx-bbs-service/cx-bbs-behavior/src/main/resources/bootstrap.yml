@@ -1,0 +1,15 @@
+server:
+  port: 51805
+spring:
+  application:
+    name: cx-bbs-behavior
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 47.121.140.92:8848
+      config:
+        server-addr: 47.121.140.92:8848
+        file-extension: yml
+#  kafka:
+#    hosts: 47.121.140.92:9092
+#    group: ${spring.application.name}

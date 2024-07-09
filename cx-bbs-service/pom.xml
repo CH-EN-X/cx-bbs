@@ -15,6 +15,7 @@
         <module>cx-bbs-article</module>
         <module>cx-bbs-user</module>
         <module>cx-bbs-admin</module>
+        <module>cx-bbs-behavior</module>
     </modules>
 
     <properties>
