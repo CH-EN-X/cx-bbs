@@ -54,22 +54,11 @@ function goDetails(id){
 const route = useRoute();
 const word = route.query.q;
 
-// export default function search(word) {
-//   return new Promise((resolve, reject) => {
-//     axios.post("http://localhost:51802/api/v1/article/search/search", {
-//       searchWords: word,
-//       "pageNum": 0,
-//       "pageSize": 5
-//     }).then(res => {
-//       resolve(res.data);
-//     }).catch(error => {
-//       reject(error);
-//     });
-//   });
-// }
+
 function load(){
   console.log(word)
-  axios.post("http://localhost:51802/api/v1/article/search/search", {
+  // if (word){
+    axios.post("http://localhost:51802/api/v1/article/search/search", {
       searchWords: word,
       "pageNum": 0,
       "pageSize": 5
@@ -78,6 +67,17 @@ function load(){
       // resolve(res.data);
     }).catch(error => {
     });
+  // }else {
+  //   axios.post("http://localhost:51802/api/article/recommend", {
+  //     page:0
+  //   }).then(res => {
+  //     questions.value = res.data.data;
+  //     // resolve(res.data);
+  //   }).catch(error => {
+  //   });
+  //
+  // }
+
 }
 load()
 </script>
@@ -89,13 +89,9 @@ load()
         <ul>
           <li v-for="(v,index) in questions" :key="v.id" style="padding-bottom: 20px;padding-top: 20px;">
             <div @click="goDetails(v.id)">
-<!--            <div>-->
-              <div class="topstory-hd">
-                <!-- <img :src="v.img" alt=""> -->
-                <span>{{ v.name }}</span>
-              </div>
-              <h2 class="topstory-title" v-html="v.h_title"></h2>
 
+              <h2 class="topstory-title" v-html="v.h_title" v-if="v.h_title"></h2>
+              <h2 class="topstory-title" v-html="v.title" v-else></h2>
               <div class="topstory-articleitem">
                 <p v-html="v.content"></p>
               </div>

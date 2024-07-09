@@ -238,6 +238,37 @@ let state = reactive({
   // replyingComment: '',
 });
 
+axios.interceptors.response.use(
+    response => {
+      console.log('拦截器响应成功')
+      if (response.data.code === '1'){
+
+      }
+      return response
+    },
+    error => {
+      console.log('拦截器响应失败')
+      console.log(error)
+      if(error.request){
+        console.log(error.request)
+      } else if(error.response){
+        console.log(error.response.data);
+        console.log(error.response.status);
+      }
+      if (error && error.response) {
+        switch (error.response.status) {
+          case 401: error.message = '未授权，请重新登录(401)';
+            router.push({
+              name: 'login'
+            });
+            break;
+        }
+      }else{
+        error.message ='连接服务器失败!'
+      }
+      return Promise.reject(error)
+    }
+)
 // //计算评论数量
 // function getTotalSubCommentsLength(comments) {
 //   let totalLength = comments.length;
@@ -338,7 +369,26 @@ const sendReply = (comment) => {
   toggleReply(comment);
 };
 
+function loadBehavior(){
 
+}
+//----------------------------
+//赞成功能 0赞成 1取消赞成
+function like(id,operation){
+  console.log(id)
+  axios.post("http://localhost:51805/api/v1/likes_behavior",{
+    articleId: id,
+    type: 0,
+    operation: operation
+  })
+}
+//不赞成功能 0不赞成 1取消不赞成
+function unlike(id,type){
+  axios.post("http://localhost:51805/api/v1/un_likes_behavior",{
+    articleId: id,
+    type: type,
+  })
+}
 
 </script>
 
@@ -529,22 +579,22 @@ const sendReply = (comment) => {
             <li>
 
               <el-button v-if="article.favour" style="line-height: 30px;padding: 0 12px;border: none;"
-                         type="primary" @click="article.likes--;article.favour=false">
+                         type="primary" @click="article.likes--;article.favour=false;like(article.id,1)">
                 <i class="iconfont icon-xiangshang1"></i>已赞成{{ article.likes }}
               </el-button>
               <el-button v-else="article.favour"
                          style="line-height: 30px;padding: 0 12px;border: none;"
-                         @click="article.likes++;article.favour=true;article.disfavour=false;favourUp()">
+                         @click="article.likes++;article.favour=true;article.disfavour=false;like(article.id,0)">
                 <i class="iconfont icon-xiangshang1"></i>赞成{{ article.likes }}
               </el-button>
               <el-button v-if="!article.disfavour"
                          style="line-height: 30px;padding: 0 12px;border: none;margin-left: 0px;"
-                         @click="article.likes--;article.disfavour=true;article.favour=false">
+                         @click="article.likes--;article.disfavour=true;article.favour=false;unlike(article.id,0)">
                 <i class="iconfont icon-xiangxia2"></i>
               </el-button>
               <el-button v-else
                          style="line-height: 30px;padding: 0 12px;border: none;margin-left: 0px;" type="primary"
-                         @click="article.likes++;article.disfavour=false;favourUp()">
+                         @click="article.likes++;article.disfavour=false;unlike(article.id,1)">
                 <i class="iconfont icon-xiangxia2"></i>
               </el-button>
             </li>
@@ -552,14 +602,15 @@ const sendReply = (comment) => {
               <i class="iconfont icon-xiaoxi" ></i>
               <span>{{ article.comments.length }}条评论</span>
             </li>
-              <li>
-              <i class="iconfont icon-fenxiang"></i>
-              <span>分享</span>
-            </li>
             <li @click="dialogVisible = true">
               <i class="iconfont icon-shoucang"></i>
               <span>收藏</span>
             </li>
+              <li>
+              <i class="iconfont icon-fenxiang"></i>
+              <span>分享</span>
+            </li>
+
             <li :class="article.like ? 'approve-like' : ''" @click="article.like = !article.like">
               <i class="iconfont icon-icon-"></i>
               <span>{{ article.like ? '取消喜欢' : '喜欢' }}</span>

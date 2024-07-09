@@ -118,9 +118,11 @@ function updatePwd(){
 }
 function submitCode(){
   // axios.post()
+
   if (true){
     flag2.value = 1
   }
+
 }
 
 //点击修改头像

@@ -5,9 +5,9 @@
         <Menu />
         <div class="header-item">
             <div class="header-search" style="margin-left: -124px;margin-right: 45px;  font-size: 13px;">
-                <input type="text" placeholder="请输入内容" v-model="searchText">
+                <input type="text" placeholder="请输入内容" v-model="searchText" @keyup.enter="toSearch">
                 <button class="iconfont icon-sousuo"
-                @click="toSearch">
+                        @click="toSearch">
                   <!--                        style="border-bottom-right-radius: 999px;-->
                   <!--                        border-top-right-radius: 1018px;-->
                   <!--                        background-color: #409eff;-->
@@ -126,16 +126,6 @@ function toSearch(){
       q: searchText.value
     }
   })
-}
-
-const handleClose = (done: () => void) => {
-  // ElMessageBox.confirm('Are you sure to close this dialog?')
-  //     .then(() => {
-  //       done()
-  //     })
-  //     .catch(() => {
-  //       // catch error
-  //     })
 }
 
 const router = useRouter();

@@ -38,6 +38,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -123,6 +124,7 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
         article.setAuthorName(dto.getAuthorName());
         article.setImages(dto.getImages());
         article.setQuestionId(dto.getQuestionId());
+        article.setPublishTime(LocalDateTime.now());
         articleMapper.insert(article);
 
         ArticleContent articleContent = new ArticleContent();

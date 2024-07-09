@@ -78,6 +78,7 @@ function login () {
         localStorage.setItem("image",response.data.data.user.image)
         // localStorage.setItem('token', response.data.data.token)
         axios.defaults.headers.common['token'] = response.data.data.token;
+        axios.defaults.headers.common['userId'] = response.data.data.user.id;
         toIndex();
       } else {
         ElMessage.error(response.data.message);
@@ -99,18 +100,18 @@ function login () {
 <!--        <img src="@/assets/image/logo2.svg" alt="">-->
       </div>
       <div class="login-item">
-        <div class="loginleft">
-          <p class="loginleft-title">打开知乎App</p>
-          <div class="loginleft-erm">
-            <img src="@/assets/image/ITM920.jpg" alt="">
-          </div>
-          <p class="loginleft-message">其他扫码方式：微信</p>
-          <ul>
-            <li><el-button round>下载知乎App</el-button></li>
-            <li><el-button round>开通机构号</el-button></li>
-            <li><el-button round>无障碍模式</el-button></li>
-          </ul>
-        </div>
+<!--        <div class="loginleft">-->
+<!--          <p class="loginleft-title">晨曦问答</p>-->
+<!--&lt;!&ndash;          <div class="loginleft-erm">&ndash;&gt;-->
+<!--&lt;!&ndash;            <img src="@/assets/image/ITM920.jpg" alt="">&ndash;&gt;-->
+<!--&lt;!&ndash;          </div>&ndash;&gt;-->
+<!--&lt;!&ndash;          <p class="loginleft-message">其他扫码方式：微信</p>&ndash;&gt;-->
+<!--&lt;!&ndash;          <ul>&ndash;&gt;-->
+<!--&lt;!&ndash;            <li><el-button round>下载知乎App</el-button></li>&ndash;&gt;-->
+<!--&lt;!&ndash;            <li><el-button round>开通机构号</el-button></li>&ndash;&gt;-->
+<!--&lt;!&ndash;            <li><el-button round>无障碍模式</el-button></li>&ndash;&gt;-->
+<!--&lt;!&ndash;          </ul>&ndash;&gt;-->
+<!--        </div>-->
         <div class="loginright">
           <el-tabs v-model="activeName" class="demo-tabs" @tab-click="handleClick">
             <el-tab-pane label="账号登录" name="first">
@@ -147,7 +148,7 @@ function login () {
               </div>
               <el-input v-model="form.input5" type="password" placeholder="请输入密码" />
               <el-button type="primary" @click="reg">注册</el-button>
-              <p class="agreement">注册即代表同意用户协议</p>
+              <p class="agreement" style="font-size: 14px;">注册即代表同意用户协议</p>
             </el-tab-pane>
           </el-tabs>
         </div>
