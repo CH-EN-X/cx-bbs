@@ -1,12 +1,14 @@
 package com.cx.article.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.cx.model.article.ArticleInfoDto;
 import com.cx.model.article.dtos.AnswerDto;
 import com.cx.model.article.dtos.RecommendDto;
 import com.cx.model.article.pojos.Article;
 import com.cx.model.article.dtos.ArticleHomeDto;
 import com.cx.model.article.vo.RecommendVO;
 import com.cx.model.common.dtos.ResponseResult;
+import com.cx.model.mess.ArticleVisitStreamMess;
 
 public interface ArticleService extends IService<Article> {
 
@@ -23,6 +25,12 @@ public interface ArticleService extends IService<Article> {
     ResponseResult publish(AnswerDto dto);
 
     ResponseResult<RecommendVO> interest(Integer id);
+
+    ResponseResult loadArticleBehavior(ArticleInfoDto dto);
+
+    void updateScore(ArticleVisitStreamMess mess);
+
+    ResponseResult load2(ArticleHomeDto dto, Short type, boolean b);
 
 
 //    ResponseResult loadContent(Integer id);

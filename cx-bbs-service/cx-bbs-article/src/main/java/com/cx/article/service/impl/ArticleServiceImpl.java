@@ -1,9 +1,7 @@
 package com.cx.article.service.impl;
 
 import com.alibaba.cloud.commons.lang.StringUtils;
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.cx.article.mapper.ArticleContentMapper;
 import com.cx.article.mapper.ArticleMapper;
@@ -12,34 +10,35 @@ import com.cx.article.mapper.SensitiveMapper;
 import com.cx.article.service.ArticleService;
 import com.cx.common.aliyun.GreenTextScan;
 import com.cx.common.constants.ArticleConstants;
+import com.cx.common.constants.BehaviorConstants;
+import com.cx.common.redis.CacheService;
 import com.cx.feign.client.UserClient;
+import com.cx.model.article.ArticleInfoDto;
 import com.cx.model.article.dtos.AnswerDto;
 import com.cx.model.article.dtos.ArticleDto;
 import com.cx.model.article.dtos.RecommendDto;
 import com.cx.model.article.pojos.Article;
 import com.cx.model.article.dtos.ArticleHomeDto;
 import com.cx.model.article.pojos.ArticleContent;
-import com.cx.model.article.pojos.Question;
 import com.cx.model.article.pojos.Sensitive;
-import com.cx.model.article.vo.ArticleVO;
 import com.cx.model.article.vo.FollowVO;
+import com.cx.model.article.vo.HotArticleVo;
 import com.cx.model.article.vo.RecommendVO;
 import com.cx.model.common.dtos.ResponseResult;
 import com.cx.model.common.enums.HttpCodeEnum;
-import com.cx.model.user.UserFollow;
+import com.cx.model.mess.ArticleVisitStreamMess;
+import com.cx.model.user.User;
 import com.cx.model.user.vo.UserVO;
-import com.cx.utils.common.ConvertUtil;
 import com.cx.utils.common.SensitiveWordUtil;
+import com.cx.utils.thread.ThreadLocalUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -184,5 +183,176 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
 
         return flag;
     }
+
+    @Autowired
+    private CacheService cacheService;
+
+    @Override
+    public ResponseResult loadArticleBehavior(ArticleInfoDto dto) {
+
+        //0.检查参数
+        if (dto == null || dto.getArticleId() == null || dto.getAuthorId() == null) {
+            return ResponseResult.errorResult(HttpCodeEnum.PARAM_INVALID);
+        }
+
+        //{ "isfollow": true, "islike": true,"isunlike": false,"iscollection": true }
+        boolean isfollow = false, islike = false, isunlike = false, iscollection = false;
+
+        User user = ThreadLocalUtil.getUser();
+        if(user != null){
+            //喜欢行为
+            String likeBehaviorJson = (String) cacheService.hGet(BehaviorConstants.LIKE_BEHAVIOR + dto.getArticleId().toString(), user.getId().toString());
+            if(org.apache.commons.lang3.StringUtils.isNotBlank(likeBehaviorJson)){
+                islike = true;
+            }
+            //不喜欢的行为
+            String unLikeBehaviorJson = (String) cacheService.hGet(BehaviorConstants.UN_LIKE_BEHAVIOR + dto.getArticleId().toString(), user.getId().toString());
+            if(org.apache.commons.lang3.StringUtils.isNotBlank(unLikeBehaviorJson)){
+                isunlike = true;
+            }
+            //是否收藏
+            String collctionJson = (String) cacheService.hGet(BehaviorConstants.COLLECTION_BEHAVIOR+user.getId(),dto.getArticleId().toString());
+            if(org.apache.commons.lang3.StringUtils.isNotBlank(collctionJson)){
+                iscollection = true;
+            }
+
+//            //是否关注
+//            Double score = cacheService.zScore(BehaviorConstants.APUSER_FOLLOW_RELATION + user.getId(), dto.getAuthorId().toString());
+//            System.out.println(score);
+//            if(score != null){
+//                isfollow = true;
+//            }
+
+        }
+
+        Map<String, Object> resultMap = new HashMap<>();
+        resultMap.put("isfollow", isfollow);
+        resultMap.put("islike", islike);
+        resultMap.put("isunlike", isunlike);
+        resultMap.put("iscollection", iscollection);
+
+        return ResponseResult.okResult(resultMap);
+    }
+
+    /**
+     * 更新文章的分值  同时更新缓存中的热点文章数据
+     * @param mess
+     */
+    @Override
+    public void updateScore(ArticleVisitStreamMess mess) {
+        //1.更新文章的阅读、点赞、收藏、评论的数量
+        Article article = updateArticle(mess);
+        //2.计算文章的分值
+        Integer score = computeScore(article);
+        score = score * 3;
+
+        //3.替换当前文章对应频道的热点数据
+        replaceDataToRedis(article, score, ArticleConstants.HOT_ARTICLE_FIRST_PAGE + article.getChannelId());
+
+        //4.替换推荐对应的热点数据
+        replaceDataToRedis(article, score, ArticleConstants.HOT_ARTICLE_FIRST_PAGE + ArticleConstants.DEFAULT_TAG);
+
+    }
+
+    @Override
+    public ResponseResult load2(ArticleHomeDto dto, Short type, boolean firstPage) {
+        String jsonStr = cacheService.get(ArticleConstants.HOT_ARTICLE_FIRST_PAGE + 6);
+        if(org.apache.commons.lang3.StringUtils.isNotBlank(jsonStr)){
+            List<HotArticleVo> hotArticleVoList = JSON.parseArray(jsonStr, HotArticleVo.class);
+            ResponseResult responseResult = ResponseResult.okResult(hotArticleVoList);
+            return responseResult;
+        }
+        return load(type,dto);
+    }
+
+    /**
+     * 替换数据并且存入到redis
+     * @param apArticle
+     * @param score
+     * @param s
+     */
+    private void replaceDataToRedis(Article apArticle, Integer score, String s){
+        String articleListStr = cacheService.get(s);
+        if (org.apache.commons.lang3.StringUtils.isNotBlank(articleListStr)) {
+            List<HotArticleVo> hotArticleVoList = JSON.parseArray(articleListStr, HotArticleVo.class);
+
+            boolean flag = true;
+
+            //如果缓存中存在该文章，只更新分值
+            for (HotArticleVo hotArticleVo : hotArticleVoList) {
+                if (hotArticleVo.getId().equals(apArticle.getId())) {
+                    hotArticleVo.setScore(score);
+                    flag = false;
+                    break;
+                }
+            }
+
+            //如果缓存中不存在，查询缓存中分值最小的一条数据，进行分值的比较，如果当前文章的分值大于缓存中的数据，就替换
+            if (flag) {
+                if (hotArticleVoList.size() >= 30) {
+                    hotArticleVoList = hotArticleVoList.stream().sorted(Comparator.comparing(HotArticleVo::getScore).reversed()).collect(Collectors.toList());
+                    HotArticleVo lastHot = hotArticleVoList.get(hotArticleVoList.size() - 1);
+                    if (lastHot.getScore() < score) {
+                        hotArticleVoList.remove(lastHot);
+                        HotArticleVo hot = new HotArticleVo();
+                        BeanUtils.copyProperties(apArticle, hot);
+                        hot.setScore(score);
+                        hotArticleVoList.add(hot);
+                    }
+
+
+                } else {
+                    HotArticleVo hot = new HotArticleVo();
+                    BeanUtils.copyProperties(apArticle, hot);
+                    hot.setScore(score);
+                    hotArticleVoList.add(hot);
+                }
+            }
+            //缓存到redis
+            hotArticleVoList = hotArticleVoList.stream().sorted(Comparator.comparing(HotArticleVo::getScore).reversed()).collect(Collectors.toList());
+            cacheService.set(s, JSON.toJSONString(hotArticleVoList));
+
+        }
+    }
+
+    /**
+     * 计算文章的具体分值
+     * @param article
+     * @return
+     */
+    private Integer computeScore(Article article) {
+        Integer score = 0;
+        if(article.getLikes() != null){
+            score += article.getLikes() * ArticleConstants.HOT_ARTICLE_LIKE_WEIGHT;
+        }
+        if(article.getViews() != null){
+            score += article.getViews();
+        }
+        if(article.getComment() != null){
+            score += article.getComment() * ArticleConstants.HOT_ARTICLE_COMMENT_WEIGHT;
+        }
+        if(article.getCollection() != null){
+            score += article.getCollection() * ArticleConstants.HOT_ARTICLE_COLLECTION_WEIGHT;
+        }
+
+        return score;
+    }
+
+    /**
+     * 更新文章行为数量
+     * @param mess
+     */
+    private Article updateArticle(ArticleVisitStreamMess mess) {
+        Article apArticle = getById(mess.getArticleId());
+        apArticle.setCollection(apArticle.getCollection()==null?0:apArticle.getCollection()+mess.getCollect());
+        apArticle.setComment(apArticle.getComment()==null?0:apArticle.getComment()+mess.getComment());
+        apArticle.setLikes(apArticle.getLikes()==null?0:apArticle.getLikes()+mess.getLike());
+        apArticle.setViews(apArticle.getViews()==null?0:apArticle.getViews()+mess.getView());
+        updateById(apArticle);
+        return apArticle;
+    }
+
+
+
 
 }
