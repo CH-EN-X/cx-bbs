@@ -42,44 +42,59 @@ function goDetails(v) {
   endLoading()
 }
 
-axios.interceptors.response.use(
-    response => {
-      console.log('拦截器响应成功')
-      return response
-    },
-    error => {
-      console.log('拦截器响应失败')
-      console.log(error)
-      if(error.request){
-        console.log(error.request)
-      } else if(error.response){
-        console.log(error.response.data);
-        console.log(error.response.status);
-      }
-      if (error && error.response) {
-        switch (error.response.status) {
-          case 401: error.message = '未授权，请重新登录(401)';
-            router.push({
-              name: 'login'
-            });
-            break;
-        }
-      }else{
-        error.message ='连接服务器失败!'
-      }
-      return Promise.reject(error)
-    }
-)
+//赞成功能 0赞成 1取消赞成
+function like(id,operation){
+  console.log(id)
+  axios.post("http://localhost:51805/api/v1/likes_behavior",{
+    articleId: id,
+    type: 0,
+    operation: operation
+  })
+}
+//不赞成功能 0不赞成 1取消不赞成
+function unlike(id,type){
+  axios.post("http://localhost:51805/api/v1/un_likes_behavior",{
+    articleId: id,
+    type: type,
+  })
+}
 
-// function search(word){
-//   axios.post("http://localhost:51802/api/v1/article/search/search",{
-//     searchWords: word,
-//     "pageNum": 0,
-//     "pageSize": 5
-//   }).then(res=>{
-//
-//   })
-// }
+// axios.interceptors.response.use(
+//     response => {
+//       console.log('拦截器响应成功')
+//       if (response.data.code === '1'){
+//         //请先登录
+//         ElMessage.warning("请先登录")
+//         router.push({
+//           name: 'login'
+//         });
+//       }
+//       return response
+//     },
+//     error => {
+//       console.log('拦截器响应失败')
+//       console.log(error)
+//       if(error.request){
+//         console.log(error.request)
+//       } else if(error.response){
+//         console.log(error.response.data);
+//         console.log(error.response.status);
+//       }
+//       if (error && error.response) {
+//         switch (error.response.status) {
+//           case 401: error.message = '未授权，请重新登录(401)';
+//             router.push({
+//               name: 'login'
+//             });
+//             break;
+//         }
+//       }else{
+//         error.message ='连接服务器失败!'
+//       }
+//       return Promise.reject(error)
+//     }
+// )
+
 
 
 function load() {
@@ -137,19 +152,19 @@ load()
             <li>
 
               <el-button v-if="v.like" style="line-height: 30px;padding: 0 12px;border: none;"
-                         type="primary" @click="v.likes--;v.like=false">
+                         type="primary" @click="v.likes--;v.like=false;like(v.articleId,1)">
                 <i class="iconfont icon-xiangshang1"></i>已赞成{{ v.likes }}
               </el-button>
               <el-button v-else="v.like"
-                         style="line-height: 30px;padding: 0 12px;border: none;" @click="v.likes++;v.like=true;v.dislike=false;likeUp()">
+                         style="line-height: 30px;padding: 0 12px;border: none;" @click="v.likes++;v.like=true;v.dislike=false;like(v.articleId,0)">
                 <i class="iconfont icon-xiangshang1"></i>赞成{{ v.likes }}
               </el-button>
               <el-button v-if="!v.dislike"
-                         style="line-height: 30px;padding: 0 12px;border: none;margin-left: 0px;" @click="v.likes--;v.dislike=true;v.like=false">
+                         style="line-height: 30px;padding: 0 12px;border: none;margin-left: 0px;" @click="v.likes--;v.dislike=true;v.like=false;unlike(v.articleId,0)">
                 <i class="iconfont icon-xiangxia2"></i>
               </el-button>
               <el-button v-else
-                         style="line-height: 30px;padding: 0 12px;border: none;margin-left: 0px;" type="primary" @click="v.likes++;v.dislike=false;likeUp()">
+                         style="line-height: 30px;padding: 0 12px;border: none;margin-left: 0px;" type="primary" @click="v.likes++;v.dislike=false;;unlike(v.articleId,1)">
                 <i class="iconfont icon-xiangxia2"></i>
               </el-button>
             </li>
